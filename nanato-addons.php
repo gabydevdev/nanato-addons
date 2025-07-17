@@ -51,15 +51,18 @@ require NANATO_ADDONS_DIR . 'includes/class-nanato-addons.php';
 /**
  * Registers the ACF field type.
  */
-function nanato_addons_include_acf_field_info_button() {
+function nanato_addons_include_acf_fields() {
 	if ( ! function_exists( 'acf_register_field_type' ) ) {
 		return;
 	}
 
 	require_once NANATO_ADDONS_DIR . '/acf-info-button/class-nanato-addons-acf-field-info-button.php';
 	acf_register_field_type( 'nanato_addons_acf_field_info_button' );
+
+	require_once NANATO_ADDONS_DIR . '/acf-button/class-nanato-addons-acf-field-button.php';
+	acf_register_field_type( 'nanato_addons_acf_field_button' );
 }
-add_action( 'init', 'nanato_addons_include_acf_field_info_button' );
+add_action( 'init', 'nanato_addons_include_acf_fields' );
 
 /**
  * Begins execution of the plugin.
