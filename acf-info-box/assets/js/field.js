@@ -1,5 +1,5 @@
 /**
- * Included when button fields are rendered for editing by publishers.
+ * Included when info-box fields are rendered for editing by publishers.
  */
 
 (function ($) {
@@ -7,21 +7,12 @@
 		// Initialize WordPress color pickers
 		$field.find('.color-picker').wpColorPicker();
 
-		// Handle link type change
-		$field.find('.link-type-select').on('change', function () {
-			var linkType = $(this).val();
-			var linkContentField = $field.find('.acf-button-link-content');
-
-			linkContentField.find('.acf-button-internal-link').toggle(linkType === 'internal');
-			linkContentField.find('.acf-button-external-link').toggle(linkType === 'external');
-		});
-
 		// Handle icon selection (SVG and image files)
 		$field.find('.select-icon').on('click', function (e) {
 			e.preventDefault();
 
 			var button = $(this);
-			var field = button.closest('.acf-button-subfield');
+			var field = button.closest('.acf-info-box-subfield');
 
 			var iconUploader = wp.media({
 				title: 'Select Icon',
@@ -62,7 +53,7 @@
 		 * Run initialize_field when existing fields of this type load,
 		 * or when new fields are appended via repeaters or similar.
 		 */
-		acf.add_action('ready_field/type=button', initialize_field);
-		acf.add_action('append_field/type=button', initialize_field);
+		acf.add_action('ready_field/type=info-box', initialize_field);
+		acf.add_action('append_field/type=info-box', initialize_field);
 	}
 })(jQuery);

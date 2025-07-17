@@ -71,7 +71,7 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 		$this->description = __( 'Create comprehensive buttons with content, styling, and link configuration.', 'nanato-addons' );
 
 		// Documentation URLs (optional)
-		$this->doc_url = '';
+		$this->doc_url      = '';
 		$this->tutorial_url = '';
 
 		// Set default field values
@@ -215,12 +215,7 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 						<label for="<?php echo esc_attr( $field['name'] ); ?>_text"><?php echo esc_html__( 'Button Text', 'nanato-addons' ); ?></label>
 					</div>
 					<div class="acf-input">
-						<input type="text" 
-							name="<?php echo esc_attr( $field['name'] ); ?>[text]"
-							id="<?php echo esc_attr( $field['name'] ); ?>_text" 
-							value="<?php echo esc_attr( $field['value']['text'] ); ?>"
-							placeholder="<?php echo esc_attr__( 'Enter button text', 'nanato-addons' ); ?>"
-						/>
+						<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[text]" id="<?php echo esc_attr( $field['name'] ); ?>_text" value="<?php echo esc_attr( $field['value']['text'] ); ?>" placeholder="<?php echo esc_attr__( 'Enter button text', 'nanato-addons' ); ?>" />
 					</div>
 				</div>
 
@@ -230,12 +225,7 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 						<label for="<?php echo esc_attr( $field['name'] ); ?>_subtext"><?php echo esc_html__( 'Button Subtext', 'nanato-addons' ); ?></label>
 					</div>
 					<div class="acf-input">
-						<input type="text" 
-							name="<?php echo esc_attr( $field['name'] ); ?>[subtext]"
-							id="<?php echo esc_attr( $field['name'] ); ?>_subtext" 
-							value="<?php echo esc_attr( $field['value']['subtext'] ); ?>"
-							placeholder="<?php echo esc_attr__( 'Optional subtext', 'nanato-addons' ); ?>"
-						/>
+						<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[subtext]" id="<?php echo esc_attr( $field['name'] ); ?>_subtext" value="<?php echo esc_attr( $field['value']['subtext'] ); ?>" placeholder="<?php echo esc_attr__( 'Optional subtext', 'nanato-addons' ); ?>" />
 					</div>
 				</div>
 
@@ -246,11 +236,7 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 						<p class="description"><?php echo esc_html__( 'Select an SVG icon or image file', 'nanato-addons' ); ?></p>
 					</div>
 					<div class="acf-input">
-						<input type="hidden" 
-							name="<?php echo esc_attr( $field['name'] ); ?>[icon]"
-							id="<?php echo esc_attr( $field['name'] ); ?>_icon" 
-							value="<?php echo esc_attr( $field['value']['icon'] ); ?>"
-						/>
+						<input type="hidden" name="<?php echo esc_attr( $field['name'] ); ?>[icon]" id="<?php echo esc_attr( $field['name'] ); ?>_icon" value="<?php echo esc_attr( $field['value']['icon'] ); ?>" />
 						<div class="icon-controls">
 							<button type="button" class="button select-icon"><?php echo esc_html__( 'Select Icon', 'nanato-addons' ); ?></button>
 							<button type="button" class="button remove-icon" style="<?php echo empty( $field['value']['icon'] ) ? 'display:none;' : ''; ?>"><?php echo esc_html__( 'Remove', 'nanato-addons' ); ?></button>
@@ -291,7 +277,7 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 						$layout_options = apply_filters( 'nanato_addons_acf_field_info_button_layout_options', array(
 							'filled'   => __( 'Filled', 'nanato-addons' ),
 							'outlined' => __( 'Outlined', 'nanato-addons' ),
-						));
+						) );
 						?>
 						<select name="<?php echo esc_attr( $field['name'] ); ?>[layout]" id="<?php echo esc_attr( $field['name'] ); ?>_layout">
 							<?php foreach ( $layout_options as $value => $label ) : ?>
@@ -314,7 +300,7 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 						$type_options = apply_filters( 'nanato_addons_acf_field_info_button_type_options', array(
 							'standard'   => __( 'Standard', 'nanato-addons' ),
 							'icon_boxed' => __( 'Icon Boxed', 'nanato-addons' ),
-						));
+						) );
 						?>
 						<select name="<?php echo esc_attr( $field['name'] ); ?>[type]" id="<?php echo esc_attr( $field['name'] ); ?>_type">
 							<?php foreach ( $type_options as $value => $label ) : ?>
@@ -339,7 +325,7 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 							'secondary' => __( 'Secondary', 'nanato-addons' ),
 							'light'     => __( 'Light', 'nanato-addons' ),
 							'dark'      => __( 'Dark', 'nanato-addons' ),
-						));
+						) );
 						?>
 						<select name="<?php echo esc_attr( $field['name'] ); ?>[style]" id="<?php echo esc_attr( $field['name'] ); ?>_style">
 							<?php foreach ( $style_options as $value => $label ) : ?>
@@ -358,13 +344,7 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 						<p class="description"><?php echo esc_html__( 'Override theme text color', 'nanato-addons' ); ?></p>
 					</div>
 					<div class="acf-input">
-						<input type="text" 
-							name="<?php echo esc_attr( $field['name'] ); ?>[text_color]"
-							id="<?php echo esc_attr( $field['name'] ); ?>_text_color" 
-							value="<?php echo esc_attr( $field['value']['text_color'] ); ?>"
-							class="color-picker"
-							placeholder="<?php echo esc_attr__( 'Optional', 'nanato-addons' ); ?>"
-						/>
+						<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[text_color]" id="<?php echo esc_attr( $field['name'] ); ?>_text_color" value="<?php echo esc_attr( $field['value']['text_color'] ); ?>" class="color-picker" placeholder="<?php echo esc_attr__( 'Optional', 'nanato-addons' ); ?>" />
 					</div>
 				</div>
 
@@ -375,13 +355,7 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 						<p class="description"><?php echo esc_html__( 'Override theme background color', 'nanato-addons' ); ?></p>
 					</div>
 					<div class="acf-input">
-						<input type="text" 
-							name="<?php echo esc_attr( $field['name'] ); ?>[background_color]"
-							id="<?php echo esc_attr( $field['name'] ); ?>_background_color" 
-							value="<?php echo esc_attr( $field['value']['background_color'] ); ?>"
-							class="color-picker"
-							placeholder="<?php echo esc_attr__( 'Optional', 'nanato-addons' ); ?>"
-						/>
+						<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[background_color]" id="<?php echo esc_attr( $field['name'] ); ?>_background_color" value="<?php echo esc_attr( $field['value']['background_color'] ); ?>" class="color-picker" placeholder="<?php echo esc_attr__( 'Optional', 'nanato-addons' ); ?>" />
 					</div>
 				</div>
 
@@ -392,11 +366,7 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 						<p class="description"><?php echo esc_html__( 'Optional background image for the button', 'nanato-addons' ); ?></p>
 					</div>
 					<div class="acf-input">
-						<input type="hidden" 
-							name="<?php echo esc_attr( $field['name'] ); ?>[background_image]"
-							id="<?php echo esc_attr( $field['name'] ); ?>_background_image" 
-							value="<?php echo esc_attr( $field['value']['background_image'] ); ?>"
-						/>
+						<input type="hidden" name="<?php echo esc_attr( $field['name'] ); ?>[background_image]" id="<?php echo esc_attr( $field['name'] ); ?>_background_image" value="<?php echo esc_attr( $field['value']['background_image'] ); ?>" />
 						<div class="image-controls">
 							<button type="button" class="button select-image"><?php echo esc_html__( 'Select Image', 'nanato-addons' ); ?></button>
 							<button type="button" class="button remove-image" style="<?php echo empty( $field['value']['background_image'] ) ? 'display:none;' : ''; ?>"><?php echo esc_html__( 'Remove', 'nanato-addons' ); ?></button>
@@ -457,12 +427,7 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 							<label for="<?php echo esc_attr( $field['name'] ); ?>_url"><?php echo esc_html__( 'External URL', 'nanato-addons' ); ?></label>
 						</div>
 						<div class="acf-input">
-							<input type="text" 
-								name="<?php echo esc_attr( $field['name'] ); ?>[url]"
-								id="<?php echo esc_attr( $field['name'] ); ?>_url" 
-								value="<?php echo esc_attr( $field['value']['url'] ); ?>"
-								placeholder="https://example.com"
-							/>
+							<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[url]" id="<?php echo esc_attr( $field['name'] ); ?>_url" value="<?php echo esc_attr( $field['value']['url'] ); ?>" placeholder="https://example.com" />
 						</div>
 					</div>
 				</div>
@@ -503,12 +468,7 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 						<label for="<?php echo esc_attr( $field['name'] ); ?>_button_id"><?php echo esc_html__( 'Button ID', 'nanato-addons' ); ?></label>
 					</div>
 					<div class="acf-input">
-						<input type="text" 
-							name="<?php echo esc_attr( $field['name'] ); ?>[button_id]"
-							id="<?php echo esc_attr( $field['name'] ); ?>_button_id" 
-							value="<?php echo esc_attr( $field['value']['button_id'] ); ?>"
-							placeholder="<?php echo esc_attr__( 'e.g., my-button', 'nanato-addons' ); ?>"
-						/>
+						<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[button_id]" id="<?php echo esc_attr( $field['name'] ); ?>_button_id" value="<?php echo esc_attr( $field['value']['button_id'] ); ?>" placeholder="<?php echo esc_attr__( 'e.g., my-button', 'nanato-addons' ); ?>" />
 					</div>
 				</div>
 
@@ -518,12 +478,7 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 						<label for="<?php echo esc_attr( $field['name'] ); ?>_css_classes"><?php echo esc_html__( 'CSS Classes', 'nanato-addons' ); ?></label>
 					</div>
 					<div class="acf-input">
-						<input type="text" 
-							name="<?php echo esc_attr( $field['name'] ); ?>[css_classes]"
-							id="<?php echo esc_attr( $field['name'] ); ?>_css_classes" 
-							value="<?php echo esc_attr( $field['value']['css_classes'] ); ?>"
-							placeholder="<?php echo esc_attr__( 'e.g., btn btn-primary custom-class', 'nanato-addons' ); ?>"
-						/>
+						<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[css_classes]" id="<?php echo esc_attr( $field['name'] ); ?>_css_classes" value="<?php echo esc_attr( $field['value']['css_classes'] ); ?>" placeholder="<?php echo esc_attr__( 'e.g., btn btn-primary custom-class', 'nanato-addons' ); ?>" />
 					</div>
 				</div>
 			</div>
@@ -540,14 +495,14 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 	 */
 	private function get_internal_link_dropdown( $field ) {
 		$selected = $field['value']['internal_link'];
-		$args = array(
+		$args     = array(
 			'post_type'      => array( 'page', 'post' ),
 			'posts_per_page' => -1,
 			'post_status'    => 'publish',
 			'orderby'        => 'type title',
 			'order'          => 'ASC'
 		);
-		$posts = get_posts( $args );
+		$posts    = get_posts( $args );
 
 		ob_start();
 		?>
