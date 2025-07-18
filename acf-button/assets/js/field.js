@@ -4,9 +4,6 @@
 
 (function ($) {
 	function initialize_field($field) {
-		// Initialize WordPress color pickers
-		$field.find('.color-picker').wpColorPicker();
-
 		// Handle link type change
 		$field.find('.link-type-select').on('change', function () {
 			var linkType = $(this).val();

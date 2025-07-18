@@ -4,7 +4,7 @@
  *
  * A custom ACF field for creating styled info boxes with optional icons.
  *
- * @package NanatoAddons
+ * @package Nanato_Addons
  * @subpackage ACF_Fields
  * @since 1.0.0
  */
@@ -98,11 +98,8 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 			'icon'             => '',
 			'type'             => 'info',
 			'style'            => 'default',
-			'text_color'       => '',
-			'background_color' => '',
-			'icon_color'       => '',
-			'id'               => '',
-			'classes'          => '',
+			'html_id'          => '',
+			'css_classes'      => '',
 		);
 	}
 
@@ -146,7 +143,6 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 			'show_icon'            => 1,
 			'show_layout_style'    => 1,
 			'show_html_attributes' => 1,
-			'require_headline'     => 0,
 		) );
 
 		// Show Headline Field
@@ -157,25 +153,6 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 			'type'          => 'true_false',
 			'ui'            => 1,
 			'default_value' => 1,
-		) );
-
-		// Require Headline (only show if headline is enabled)
-		acf_render_field_setting( $field, array(
-			'label'             => __( 'Require Headline', 'nanato-addons' ),
-			'instructions'      => __( 'Make the headline field required when content is provided.', 'nanato-addons' ),
-			'name'              => 'require_headline',
-			'type'              => 'true_false',
-			'ui'                => 1,
-			'default_value'     => 0,
-			'conditional_logic' => array(
-				array(
-					array(
-						'field'    => 'show_headline',
-						'operator' => '==',
-						'value'    => '1',
-					),
-				),
-			),
 		) );
 
 		// Show Icon Field
@@ -228,7 +205,6 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 			'show_icon'            => 1,
 			'show_layout_style'    => 1,
 			'show_html_attributes' => 1,
-			'require_headline'     => 0,
 		) );
 		?>
 		<div class="acf-info-box" id="acf-<?php echo esc_attr( $field['key'] ); ?>" data-key="<?php echo esc_attr( $field['key'] ); ?>">
@@ -289,13 +265,10 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 						<div class="acf-label">
 							<label for="<?php echo esc_attr( $field['name'] ); ?>_headline">
 								<?php echo esc_html__( 'Headline', 'nanato-addons' ); ?>
-								<?php if ( $field['require_headline'] ) : ?>
-									<span class="acf-required">*</span>
-								<?php endif; ?>
 							</label>
 						</div>
 						<div class="acf-input">
-							<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[headline]" id="<?php echo esc_attr( $field['name'] ); ?>_headline" value="<?php echo esc_attr( $field['value']['headline'] ); ?>" placeholder="<?php echo esc_attr__( 'Enter info box headline', 'nanato-addons' ); ?>" <?php echo $field['require_headline'] ? 'required' : ''; ?> />
+							<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[headline]" id="<?php echo esc_attr( $field['name'] ); ?>_headline" value="<?php echo esc_attr( $field['value']['headline'] ); ?>" placeholder="<?php echo esc_attr__( 'Enter info box headline', 'nanato-addons' ); ?>" />
 						</div>
 					</div>
 				<?php endif; ?>
@@ -399,39 +372,6 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 						</select>
 					</div>
 				</div>
-
-				<!-- Text Color -->
-				<div class="acf-info-box-subfield acf-info-box-text-color">
-					<div class="acf-label">
-						<label for="<?php echo esc_attr( $field['name'] ); ?>_text_color"><?php echo esc_html__( 'Custom Text Color', 'nanato-addons' ); ?></label>
-						<p class="description"><?php echo esc_html__( 'Override theme text color', 'nanato-addons' ); ?></p>
-					</div>
-					<div class="acf-input">
-						<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[text_color]" id="<?php echo esc_attr( $field['name'] ); ?>_text_color" value="<?php echo esc_attr( $field['value']['text_color'] ); ?>" class="color-picker" placeholder="<?php echo esc_attr__( 'Optional', 'nanato-addons' ); ?>" />
-					</div>
-				</div>
-
-				<!-- Background Color -->
-				<div class="acf-info-box-subfield acf-info-box-background-color">
-					<div class="acf-label">
-						<label for="<?php echo esc_attr( $field['name'] ); ?>_background_color"><?php echo esc_html__( 'Custom Background Color', 'nanato-addons' ); ?></label>
-						<p class="description"><?php echo esc_html__( 'Override theme background color', 'nanato-addons' ); ?></p>
-					</div>
-					<div class="acf-input">
-						<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[background_color]" id="<?php echo esc_attr( $field['name'] ); ?>_background_color" value="<?php echo esc_attr( $field['value']['background_color'] ); ?>" class="color-picker" placeholder="<?php echo esc_attr__( 'Optional', 'nanato-addons' ); ?>" />
-					</div>
-				</div>
-
-				<!-- Icon Color -->
-				<div class="acf-info-box-subfield acf-info-box-icon-color">
-					<div class="acf-label">
-						<label for="<?php echo esc_attr( $field['name'] ); ?>_icon_color"><?php echo esc_html__( 'Custom Icon Color', 'nanato-addons' ); ?></label>
-						<p class="description"><?php echo esc_html__( 'Override default icon color', 'nanato-addons' ); ?></p>
-					</div>
-					<div class="acf-input">
-						<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[icon_color]" id="<?php echo esc_attr( $field['name'] ); ?>_icon_color" value="<?php echo esc_attr( $field['value']['icon_color'] ); ?>" class="color-picker" placeholder="<?php echo esc_attr__( 'Optional', 'nanato-addons' ); ?>" />
-					</div>
-				</div>
 			</div>
 		</div>
 		<?php
@@ -450,23 +390,23 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 		<div class="acf-info-box-section">
 			<div class="acf-info-box-section-title"><?php echo esc_html__( 'HTML Attributes', 'nanato-addons' ); ?></div>
 			<div class="acf-info-box-grid">
-				<!-- Info Box ID -->
+				<!-- HTML ID -->
 				<div class="acf-info-box-subfield acf-info-box-id">
 					<div class="acf-label">
-						<label for="<?php echo esc_attr( $field['name'] ); ?>_id"><?php echo esc_html__( 'Info Box ID', 'nanato-addons' ); ?></label>
+						<label for="<?php echo esc_attr( $field['name'] ); ?>_html_id"><?php echo esc_html__( 'ID', 'nanato-addons' ); ?></label>
 					</div>
 					<div class="acf-input">
-						<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[id]" id="<?php echo esc_attr( $field['name'] ); ?>_id" value="<?php echo esc_attr( $field['value']['id'] ); ?>" placeholder="<?php echo esc_attr__( 'e.g., my-info-box', 'nanato-addons' ); ?>" />
+						<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[html_id]" id="<?php echo esc_attr( $field['name'] ); ?>_html_id" value="<?php echo esc_attr( $field['value']['html_id'] ); ?>" placeholder="<?php echo esc_attr__( 'e.g., my-info-box', 'nanato-addons' ); ?>" />
 					</div>
 				</div>
 
 				<!-- CSS Classes -->
 				<div class="acf-info-box-subfield acf-info-box-classes">
 					<div class="acf-label">
-						<label for="<?php echo esc_attr( $field['name'] ); ?>_classes"><?php echo esc_html__( 'CSS Classes', 'nanato-addons' ); ?></label>
+						<label for="<?php echo esc_attr( $field['name'] ); ?>_css_classes"><?php echo esc_html__( 'CSS Classes', 'nanato-addons' ); ?></label>
 					</div>
 					<div class="acf-input">
-						<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[classes]" id="<?php echo esc_attr( $field['name'] ); ?>_classes" value="<?php echo esc_attr( $field['value']['classes'] ); ?>" placeholder="<?php echo esc_attr__( 'e.g., info-box custom-class highlight', 'nanato-addons' ); ?>" />
+						<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[css_classes]" id="<?php echo esc_attr( $field['name'] ); ?>_css_classes" value="<?php echo esc_attr( $field['value']['css_classes'] ); ?>" placeholder="<?php echo esc_attr__( 'e.g., info-box custom-class highlight', 'nanato-addons' ); ?>" />
 					</div>
 				</div>
 			</div>
@@ -486,28 +426,20 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 		$url     = trailingslashit( $this->env['url'] );
 		$version = $this->env['version'];
 
-		// Enqueue WordPress dependencies
-		wp_enqueue_media();
-		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_script( 'wp-color-picker' );
-
 		// Register and enqueue field assets
-		wp_register_script(
-			'nanato_addons-info-box',
+		wp_enqueue_script(
+			'nanato-addons-info-box',
 			"{$url}assets/js/field.js",
-			array( 'acf-input', 'wp-color-picker' ),
+			array( 'acf-input' ),
 			$version
 		);
 
-		wp_register_style(
-			'nanato_addons-info-box',
+		wp_enqueue_style(
+			'nanato-addons-info-box',
 			"{$url}assets/css/field.css",
-			array( 'acf-input', 'wp-color-picker' ),
+			array( 'acf-input' ),
 			$version
 		);
-
-		wp_enqueue_script( 'nanato_addons-info-box' );
-		wp_enqueue_style( 'nanato_addons-info-box' );
 	}
 
 	/**
@@ -524,20 +456,7 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 		// Set default field settings
 		$field = wp_parse_args( $field, array(
 			'show_headline'    => 1,
-			'require_headline' => 0,
 		) );
-
-		// Allow empty values unless field is required
-		if ( empty( $value ) && ! empty( $field['required'] ) ) {
-			return __( 'Info box content is required', 'nanato-addons' );
-		}
-
-		// Validate headline requirement if enabled and setting is active
-		if ( $field['show_headline'] && $field['require_headline'] ) {
-			if ( ! empty( $value['text'] ) && empty( $value['headline'] ) ) {
-				return __( 'Headline is required when content is provided', 'nanato-addons' );
-			}
-		}
 
 		return $valid;
 	}
@@ -631,7 +550,6 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 
 		return array(
 			'show_headline'        => ! empty( $field['show_headline'] ) ? 1 : 0,
-			'require_headline'     => ! empty( $field['require_headline'] ) ? 1 : 0,
 			'show_icon'            => ! empty( $field['show_icon'] ) ? 1 : 0,
 			'show_layout_style'    => ! empty( $field['show_layout_style'] ) ? 1 : 0,
 			'show_html_attributes' => ! empty( $field['show_html_attributes'] ) ? 1 : 0,
@@ -675,20 +593,10 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 		if ( $field_settings['show_layout_style'] ) {
 			$data['type']   = ! empty( $value['type'] ) ? $value['type'] : 'info';
 			$data['style']  = ! empty( $value['style'] ) ? $value['style'] : 'default';
-			$data['colors'] = array(
-				'text'       => ! empty( $value['text_color'] ) ? $value['text_color'] : '',
-				'background' => ! empty( $value['background_color'] ) ? $value['background_color'] : '',
-				'icon'       => ! empty( $value['icon_color'] ) ? $value['icon_color'] : '',
-			);
 		} else {
 			// Use defaults if layout & style is disabled
 			$data['type']   = 'info';
 			$data['style']  = 'default';
-			$data['colors'] = array(
-				'text'       => '',
-				'background' => '',
-				'icon'       => '',
-			);
 		}
 
 		// Add HTML attributes only if enabled

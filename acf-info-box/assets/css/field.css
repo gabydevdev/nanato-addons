@@ -66,7 +66,6 @@
 }
 
 .acf-info-box .acf-input input[type='text'],
-.acf-info-box .acf-input input[type='color'],
 .acf-info-box .acf-input textarea,
 .acf-info-box .acf-input select {
 	width: 100%;
@@ -80,19 +79,11 @@
 }
 
 .acf-info-box .acf-input input[type='text']:focus,
-.acf-info-box .acf-input input[type='color']:focus,
 .acf-info-box .acf-input textarea:focus,
 .acf-info-box .acf-input select:focus {
 	border-color: #2271b1;
 	box-shadow: 0 0 0 1px #2271b1;
 	outline: none;
-}
-
-/* Color input specific styles */
-.acf-info-box .acf-input input[type='color'] {
-	height: 40px;
-	padding: 4px;
-	cursor: pointer;
 }
 
 /* Textarea specific styles */

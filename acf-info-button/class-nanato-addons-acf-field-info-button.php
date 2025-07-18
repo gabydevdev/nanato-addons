@@ -5,7 +5,7 @@
  * A comprehensive button configuration field for Advanced Custom Fields (ACF)
  * that provides a modern, responsive admin interface with extensive customization options.
  *
- * @package NanatoAddons
+ * @package Nanato_Addons
  * @subpackage ACF_Fields
  * @since 1.0.0
  */
@@ -65,7 +65,7 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 		/**
 		 * The category the field appears within in the field type picker.
 		 */
-		$this->category = 'basic'; // basic | content | choice | relational | jquery | layout | CUSTOM GROUP NAME
+		$this->category = 'content'; // basic | content | choice | relational | jquery | layout | CUSTOM GROUP NAME
 
 		// Field type description
 		$this->description = __( 'Create comprehensive buttons with content, styling, and link configuration.', 'nanato-addons' );
@@ -100,14 +100,12 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 			'layout'           => 'filled',
 			'type'             => 'standard',
 			'style'            => 'primary',
-			'text_color'       => '',
-			'background_color' => '',
 			'background_image' => '',
 			'link_type'        => 'internal',
 			'internal_link'    => '',
 			'url'              => '',
 			'target'           => '',
-			'button_id'        => '',
+			'html_id'          => '',
 			'css_classes'      => '',
 		);
 	}
@@ -146,8 +144,20 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 	 * @since 1.0.0
 	 */
 	public function render_field_settings( $field ) {
-		// No field-level settings needed for this field type
-		// All configuration is handled in the content editing interface
+		// Default settings
+		$field = wp_parse_args( $field, array(
+			'show_html_attributes' => 1,
+		) );
+
+		// Show HTML Attributes Section
+		acf_render_field_setting( $field, array(
+			'label'         => __( 'Show HTML Attributes', 'nanato-addons' ),
+			'instructions'  => __( 'Allow users to set custom ID and CSS classes for the info box.', 'nanato-addons' ),
+			'name'          => 'show_html_attributes',
+			'type'          => 'true_false',
+			'ui'            => 1,
+			'default_value' => 1,
+		) );
 	}
 
 	/**
@@ -162,6 +172,11 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 	public function render_field( $field ) {
 		// Initialize field values with defaults
 		$field['value'] = $this->initialize_field_values( $field['value'] );
+
+		// Set default field settings
+		$field = wp_parse_args( $field, array(
+			'show_html_attributes' => 1,
+		) );
 		?>
 		<div class="acf-info-button" id="acf-<?php echo esc_attr( $field['key'] ); ?>" data-key="<?php echo esc_attr( $field['key'] ); ?>">
 			<fieldset>
@@ -169,7 +184,10 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 				$this->render_content_section( $field );
 				$this->render_layout_style_section( $field );
 				$this->render_link_configuration_section( $field );
-				$this->render_html_attributes_section( $field );
+
+				if ( $field['show_html_attributes'] ) {
+					$this->render_html_attributes_section( $field );
+				}
 				?>
 			</fieldset>
 		</div>
@@ -337,28 +355,6 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 					</div>
 				</div>
 
-				<!-- Text Color -->
-				<div class="acf-info-button-subfield acf-info-button-text-color">
-					<div class="acf-label">
-						<label for="<?php echo esc_attr( $field['name'] ); ?>_text_color"><?php echo esc_html__( 'Custom Text Color', 'nanato-addons' ); ?></label>
-						<p class="description"><?php echo esc_html__( 'Override theme text color', 'nanato-addons' ); ?></p>
-					</div>
-					<div class="acf-input">
-						<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[text_color]" id="<?php echo esc_attr( $field['name'] ); ?>_text_color" value="<?php echo esc_attr( $field['value']['text_color'] ); ?>" class="color-picker" placeholder="<?php echo esc_attr__( 'Optional', 'nanato-addons' ); ?>" />
-					</div>
-				</div>
-
-				<!-- Background Color -->
-				<div class="acf-info-button-subfield acf-info-button-background-color">
-					<div class="acf-label">
-						<label for="<?php echo esc_attr( $field['name'] ); ?>_background_color"><?php echo esc_html__( 'Custom Background Color', 'nanato-addons' ); ?></label>
-						<p class="description"><?php echo esc_html__( 'Override theme background color', 'nanato-addons' ); ?></p>
-					</div>
-					<div class="acf-input">
-						<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[background_color]" id="<?php echo esc_attr( $field['name'] ); ?>_background_color" value="<?php echo esc_attr( $field['value']['background_color'] ); ?>" class="color-picker" placeholder="<?php echo esc_attr__( 'Optional', 'nanato-addons' ); ?>" />
-					</div>
-				</div>
-
 				<!-- Background Image -->
 				<div class="acf-info-button-subfield acf-info-button-background-image acf-info-button-full-width">
 					<div class="acf-label">
@@ -462,13 +458,13 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 		<div class="acf-info-button-section">
 			<div class="acf-info-button-section-title"><?php echo esc_html__( 'HTML Attributes', 'nanato-addons' ); ?></div>
 			<div class="acf-info-button-grid">
-				<!-- Button ID -->
+				<!-- HTML ID -->
 				<div class="acf-info-button-subfield acf-info-button-id">
 					<div class="acf-label">
-						<label for="<?php echo esc_attr( $field['name'] ); ?>_button_id"><?php echo esc_html__( 'Button ID', 'nanato-addons' ); ?></label>
+						<label for="<?php echo esc_attr( $field['name'] ); ?>_html_id"><?php echo esc_html__( 'ID', 'nanato-addons' ); ?></label>
 					</div>
 					<div class="acf-input">
-						<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[button_id]" id="<?php echo esc_attr( $field['name'] ); ?>_button_id" value="<?php echo esc_attr( $field['value']['button_id'] ); ?>" placeholder="<?php echo esc_attr__( 'e.g., my-button', 'nanato-addons' ); ?>" />
+						<input type="text" name="<?php echo esc_attr( $field['name'] ); ?>[html_id]" id="<?php echo esc_attr( $field['name'] ); ?>_html_id" value="<?php echo esc_attr( $field['value']['html_id'] ); ?>" placeholder="<?php echo esc_attr__( 'e.g., my-button', 'nanato-addons' ); ?>" />
 					</div>
 				</div>
 
@@ -546,27 +542,19 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 		$url     = trailingslashit( $this->env['url'] );
 		$version = $this->env['version'];
 
-		// Enqueue WordPress dependencies
-		wp_enqueue_media();
-		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_script( 'wp-color-picker' );
-
 		// Register and enqueue field assets
-		wp_register_script(
-			'nanato_addons-info-button',
+		wp_enqueue_script(
+			'nanato-addons-info-button',
 			"{$url}assets/js/field.js",
-			array( 'acf-input', 'wp-color-picker' ),
+			array( 'acf-input' ),
 			$version
 		);
 
-		wp_register_style(
-			'nanato_addons-info-button',
+		wp_enqueue_style(
+			'nanato-addons-info-button',
 			"{$url}assets/css/field.css",
-			array( 'acf-input', 'wp-color-picker' ),
+			array( 'acf-input' ),
 			$version
 		);
-
-		wp_enqueue_script( 'nanato_addons-info-button' );
-		wp_enqueue_style( 'nanato_addons-info-button' );
 	}
 }

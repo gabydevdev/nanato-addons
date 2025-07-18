@@ -64,6 +64,9 @@ function nanato_addons_include_acf_fields() {
 
 	require_once NANATO_ADDONS_DIR . '/acf-info-box/class-nanato-addons-acf-field-info-box.php';
 	acf_register_field_type( 'nanato_addons_acf_field_info_box' );
+
+	require_once NANATO_ADDONS_DIR . '/acf-headline/class-nanato-addons-acf-field-headline.php';
+	acf_register_field_type( 'nanato_addons_acf_field_headline' );
 }
 add_action( 'init', 'nanato_addons_include_acf_fields' );
 

@@ -4,9 +4,6 @@
 
 (function ($) {
 	function initialize_field($field) {
-		// Initialize WordPress color pickers
-		$field.find('.color-picker').wpColorPicker();
-
 		// Handle icon selection (SVG and image files)
 		$field.find('.select-icon').on('click', function (e) {
 			e.preventDefault();
