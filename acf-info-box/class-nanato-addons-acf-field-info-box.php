@@ -93,13 +93,13 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 	 */
 	private function set_defaults() {
 		$this->defaults = array(
-			'headline'         => '',
-			'text'             => '',
-			'icon'             => '',
-			'type'             => 'info',
-			'style'            => 'default',
-			'html_id'          => '',
-			'css_classes'      => '',
+			'headline'    => '',
+			'text'        => '',
+			'icon'        => '',
+			'type'        => 'info',
+			'style'       => 'default',
+			'html_id'     => '',
+			'css_classes' => '',
 		);
 	}
 
@@ -138,52 +138,67 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 	 */
 	public function render_field_settings( $field ) {
 		// Default settings
-		$field = wp_parse_args( $field, array(
-			'show_headline'        => 1,
-			'show_icon'            => 1,
-			'show_layout_style'    => 1,
-			'show_html_attributes' => 1,
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'show_headline'        => 1,
+				'show_icon'            => 1,
+				'show_layout_style'    => 1,
+				'show_html_attributes' => 1,
+			)
+		);
 
 		// Show Headline Field
-		acf_render_field_setting( $field, array(
-			'label'         => __( 'Show Headline Field', 'nanato-addons' ),
-			'instructions'  => __( 'Allow users to add a headline to the info box.', 'nanato-addons' ),
-			'name'          => 'show_headline',
-			'type'          => 'true_false',
-			'ui'            => 1,
-			'default_value' => 1,
-		) );
+		acf_render_field_setting(
+			$field,
+			array(
+				'label'         => __( 'Show Headline Field', 'nanato-addons' ),
+				'instructions'  => __( 'Allow users to add a headline to the info box.', 'nanato-addons' ),
+				'name'          => 'show_headline',
+				'type'          => 'true_false',
+				'ui'            => 1,
+				'default_value' => 1,
+			)
+		);
 
 		// Show Icon Field
-		acf_render_field_setting( $field, array(
-			'label'         => __( 'Show Icon Field', 'nanato-addons' ),
-			'instructions'  => __( 'Allow users to upload an icon for the info box.', 'nanato-addons' ),
-			'name'          => 'show_icon',
-			'type'          => 'true_false',
-			'ui'            => 1,
-			'default_value' => 1,
-		) );
+		acf_render_field_setting(
+			$field,
+			array(
+				'label'         => __( 'Show Icon Field', 'nanato-addons' ),
+				'instructions'  => __( 'Allow users to upload an icon for the info box.', 'nanato-addons' ),
+				'name'          => 'show_icon',
+				'type'          => 'true_false',
+				'ui'            => 1,
+				'default_value' => 1,
+			)
+		);
 
 		// Show Layout & Style Section
-		acf_render_field_setting( $field, array(
-			'label'         => __( 'Show Layout & Style Options', 'nanato-addons' ),
-			'instructions'  => __( 'Allow users to customize type, style, and colors of the info box.', 'nanato-addons' ),
-			'name'          => 'show_layout_style',
-			'type'          => 'true_false',
-			'ui'            => 1,
-			'default_value' => 1,
-		) );
+		acf_render_field_setting(
+			$field,
+			array(
+				'label'         => __( 'Show Layout & Style Options', 'nanato-addons' ),
+				'instructions'  => __( 'Allow users to customize type, style, and colors of the info box.', 'nanato-addons' ),
+				'name'          => 'show_layout_style',
+				'type'          => 'true_false',
+				'ui'            => 1,
+				'default_value' => 1,
+			)
+		);
 
 		// Show HTML Attributes Section
-		acf_render_field_setting( $field, array(
-			'label'         => __( 'Show HTML Attributes', 'nanato-addons' ),
-			'instructions'  => __( 'Allow users to set custom ID and CSS classes for the info box.', 'nanato-addons' ),
-			'name'          => 'show_html_attributes',
-			'type'          => 'true_false',
-			'ui'            => 1,
-			'default_value' => 1,
-		) );
+		acf_render_field_setting(
+			$field,
+			array(
+				'label'         => __( 'Show HTML Attributes', 'nanato-addons' ),
+				'instructions'  => __( 'Allow users to set custom ID and CSS classes for the info box.', 'nanato-addons' ),
+				'name'          => 'show_html_attributes',
+				'type'          => 'true_false',
+				'ui'            => 1,
+				'default_value' => 1,
+			)
+		);
 	}
 
 	/**
@@ -200,12 +215,15 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 		$field['value'] = $this->initialize_field_values( $field['value'] );
 
 		// Set default field settings
-		$field = wp_parse_args( $field, array(
-			'show_headline'        => 1,
-			'show_icon'            => 1,
-			'show_layout_style'    => 1,
-			'show_html_attributes' => 1,
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'show_headline'        => 1,
+				'show_icon'            => 1,
+				'show_layout_style'    => 1,
+				'show_html_attributes' => 1,
+			)
+		);
 		?>
 		<div class="acf-info-box" id="acf-<?php echo esc_attr( $field['key'] ); ?>" data-key="<?php echo esc_attr( $field['key'] ); ?>">
 			<fieldset>
@@ -330,13 +348,16 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 					</div>
 					<div class="acf-input">
 						<?php
-						$type_options = apply_filters( 'nanato_addons_acf_field_info_box_type_options', array(
-							'info'    => __( 'Info', 'nanato-addons' ),
-							'success' => __( 'Success', 'nanato-addons' ),
-							'warning' => __( 'Warning', 'nanato-addons' ),
-							'error'   => __( 'Error', 'nanato-addons' ),
-							'note'    => __( 'Note', 'nanato-addons' ),
-						) );
+						$type_options = apply_filters(
+							'nanato_addons_acf_field_info_box_type_options',
+							array(
+								'info'    => __( 'Info', 'nanato-addons' ),
+								'success' => __( 'Success', 'nanato-addons' ),
+								'warning' => __( 'Warning', 'nanato-addons' ),
+								'error'   => __( 'Error', 'nanato-addons' ),
+								'note'    => __( 'Note', 'nanato-addons' ),
+							)
+						);
 						?>
 						<select name="<?php echo esc_attr( $field['name'] ); ?>[type]" id="<?php echo esc_attr( $field['name'] ); ?>_type">
 							<?php foreach ( $type_options as $value => $label ) : ?>
@@ -356,12 +377,15 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 					</div>
 					<div class="acf-input">
 						<?php
-						$style_options = apply_filters( 'nanato_addons_acf_field_info_box_style_options', array(
-							'default'  => __( 'Default', 'nanato-addons' ),
-							'bordered' => __( 'Bordered', 'nanato-addons' ),
-							'minimal'  => __( 'Minimal', 'nanato-addons' ),
-							'card'     => __( 'Card', 'nanato-addons' ),
-						) );
+						$style_options = apply_filters(
+							'nanato_addons_acf_field_info_box_style_options',
+							array(
+								'default'  => __( 'Default', 'nanato-addons' ),
+								'bordered' => __( 'Bordered', 'nanato-addons' ),
+								'minimal'  => __( 'Minimal', 'nanato-addons' ),
+								'card'     => __( 'Card', 'nanato-addons' ),
+							)
+						);
 						?>
 						<select name="<?php echo esc_attr( $field['name'] ); ?>[style]" id="<?php echo esc_attr( $field['name'] ); ?>_style">
 							<?php foreach ( $style_options as $value => $label ) : ?>
@@ -445,18 +469,21 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 	/**
 	 * Validate field value.
 	 *
-	 * @param bool  $valid Whether the value is valid.
-	 * @param mixed $value The field value.
-	 * @param array $field The field settings.
+	 * @param bool   $valid Whether the value is valid.
+	 * @param mixed  $value The field value.
+	 * @param array  $field The field settings.
 	 * @param string $input_name The input name.
 	 * @return bool|string True if valid, error message if invalid.
 	 * @since 1.0.0
 	 */
 	public function validate_value( $valid, $value, $field, $input_name ) {
 		// Set default field settings
-		$field = wp_parse_args( $field, array(
-			'show_headline'    => 1,
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'show_headline' => 1,
+			)
+		);
 
 		return $valid;
 	}
@@ -523,9 +550,12 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 	public function update_value( $value, $post_id, $field ) {
 		// Remove empty string values to keep database clean
 		if ( is_array( $value ) ) {
-			$value = array_filter( $value, function ($val) {
-				return $val !== '';
-			} );
+			$value = array_filter(
+				$value,
+				function ( $val ) {
+					return $val !== '';
+				}
+			);
 		}
 
 		return $value;
@@ -572,12 +602,15 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 		}
 
 		// Set default field settings
-		$field_settings = wp_parse_args( $field_settings, array(
-			'show_headline'        => 1,
-			'show_icon'            => 1,
-			'show_layout_style'    => 1,
-			'show_html_attributes' => 1,
-		) );
+		$field_settings = wp_parse_args(
+			$field_settings,
+			array(
+				'show_headline'        => 1,
+				'show_icon'            => 1,
+				'show_layout_style'    => 1,
+				'show_html_attributes' => 1,
+			)
+		);
 
 		// Process the data
 		$data = array(
@@ -591,12 +624,12 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 
 		// Add layout & style data only if enabled
 		if ( $field_settings['show_layout_style'] ) {
-			$data['type']   = ! empty( $value['type'] ) ? $value['type'] : 'info';
-			$data['style']  = ! empty( $value['style'] ) ? $value['style'] : 'default';
+			$data['type']  = ! empty( $value['type'] ) ? $value['type'] : 'info';
+			$data['style'] = ! empty( $value['style'] ) ? $value['style'] : 'default';
 		} else {
 			// Use defaults if layout & style is disabled
-			$data['type']   = 'info';
-			$data['style']  = 'default';
+			$data['type']  = 'info';
+			$data['style'] = 'default';
 		}
 
 		// Add HTML attributes only if enabled
@@ -646,5 +679,4 @@ class nanato_addons_acf_field_info_box extends \acf_field {
 
 		return $data;
 	}
-
 }

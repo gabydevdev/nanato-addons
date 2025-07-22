@@ -91,10 +91,10 @@ class nanato_addons_acf_field_headline extends \acf_field {
 	 */
 	private function set_defaults() {
 		$this->defaults = array(
-			'title' => '',
-			'title_tag' => 'h2',
-			'subtitle' => '',
-			'html_id' => '',
+			'title'       => '',
+			'title_tag'   => 'h2',
+			'subtitle'    => '',
+			'html_id'     => '',
 			'css_classes' => '',
 		);
 	}
@@ -134,30 +134,39 @@ class nanato_addons_acf_field_headline extends \acf_field {
 	 */
 	public function render_field_settings( $field ) {
 		// Default settings
-		$field = wp_parse_args( $field, array(
-			'show_subtitle' => 1,
-			'show_html_attributes' => 1,
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'show_subtitle'        => 1,
+				'show_html_attributes' => 1,
+			)
+		);
 
 		// Show Subtitle Setting
-		acf_render_field_setting( $field, array(
-			'label'         => __( 'Show Subtitle', 'nanato-addons' ),
-			'instructions'  => __( 'Allow users to add a subtitle below the main headline.', 'nanato-addons' ),
-			'name'          => 'show_subtitle',
-			'type'          => 'true_false',
-			'ui'            => 1,
-			'default_value' => 1,
-		) );
+		acf_render_field_setting(
+			$field,
+			array(
+				'label'         => __( 'Show Subtitle', 'nanato-addons' ),
+				'instructions'  => __( 'Allow users to add a subtitle below the main headline.', 'nanato-addons' ),
+				'name'          => 'show_subtitle',
+				'type'          => 'true_false',
+				'ui'            => 1,
+				'default_value' => 1,
+			)
+		);
 
 		// Show HTML Attributes Section
-		acf_render_field_setting( $field, array(
-			'label'         => __( 'Show HTML Attributes', 'nanato-addons' ),
-			'instructions'  => __( 'Allow users to set custom ID and CSS classes for the headline.', 'nanato-addons' ),
-			'name'          => 'show_html_attributes',
-			'type'          => 'true_false',
-			'ui'            => 1,
-			'default_value' => 1,
-		) );
+		acf_render_field_setting(
+			$field,
+			array(
+				'label'         => __( 'Show HTML Attributes', 'nanato-addons' ),
+				'instructions'  => __( 'Allow users to set custom ID and CSS classes for the headline.', 'nanato-addons' ),
+				'name'          => 'show_html_attributes',
+				'type'          => 'true_false',
+				'ui'            => 1,
+				'default_value' => 1,
+			)
+		);
 	}
 
 	/**
@@ -174,10 +183,13 @@ class nanato_addons_acf_field_headline extends \acf_field {
 		$field['value'] = $this->initialize_field_values( $field['value'] );
 
 		// Set default field settings
-		$field = wp_parse_args( $field, array(
-			'show_subtitle' => 1,
-			'show_html_attributes' => 1,
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'show_subtitle'        => 1,
+				'show_html_attributes' => 1,
+			)
+		);
 		?>
 		<div class="acf-headline" id="acf-<?php echo esc_attr( $field['key'] ); ?>" data-key="<?php echo esc_attr( $field['key'] ); ?>">
 			<fieldset>
@@ -249,13 +261,13 @@ class nanato_addons_acf_field_headline extends \acf_field {
 					<div class="acf-input">
 						<?php
 						$title_tag_options = array(
-							'h1' => 'H1',
-							'h2' => 'H2',
-							'h3' => 'H3',
-							'h4' => 'H4',
-							'h5' => 'H5',
-							'h6' => 'H6',
-							'p'  => 'P',
+							'h1'  => 'H1',
+							'h2'  => 'H2',
+							'h3'  => 'H3',
+							'h4'  => 'H4',
+							'h5'  => 'H5',
+							'h6'  => 'H6',
+							'p'   => 'P',
 							'div' => 'DIV',
 						);
 						?>
@@ -355,18 +367,21 @@ class nanato_addons_acf_field_headline extends \acf_field {
 	/**
 	 * Validate field value.
 	 *
-	 * @param bool  $valid Whether the value is valid.
-	 * @param mixed $value The field value.
-	 * @param array $field The field settings.
+	 * @param bool   $valid Whether the value is valid.
+	 * @param mixed  $value The field value.
+	 * @param array  $field The field settings.
 	 * @param string $input_name The input name.
 	 * @return bool|string True if valid, error message if invalid.
 	 * @since 1.0.0
 	 */
 	public function validate_value( $valid, $value, $field, $input_name ) {
 		// Set default field settings
-		$field = wp_parse_args( $field, array(
-			'show_subtitle' => 1,
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'show_subtitle' => 1,
+			)
+		);
 
 		return $valid;
 	}
@@ -427,9 +442,12 @@ class nanato_addons_acf_field_headline extends \acf_field {
 	public function update_value( $value, $post_id, $field ) {
 		// Remove empty string values to keep database clean
 		if ( is_array( $value ) ) {
-			$value = array_filter( $value, function ($val) {
-				return $val !== '';
-			} );
+			$value = array_filter(
+				$value,
+				function ( $val ) {
+					return $val !== '';
+				}
+			);
 		}
 
 		return $value;
@@ -472,10 +490,13 @@ class nanato_addons_acf_field_headline extends \acf_field {
 		}
 
 		// Set default field settings
-		$field_settings = wp_parse_args( $field_settings, array(
-			'show_subtitle'        => 1,
-			'show_html_attributes' => 1,
-		) );
+		$field_settings = wp_parse_args(
+			$field_settings,
+			array(
+				'show_subtitle'        => 1,
+				'show_html_attributes' => 1,
+			)
+		);
 
 		// Process the data
 		$data = array(
@@ -502,7 +523,7 @@ class nanato_addons_acf_field_headline extends \acf_field {
 		}
 
 		// Build CSS classes array
-		$css_classes   = array( 'nanato-headline' );
+		$css_classes = array( 'nanato-headline' );
 
 		if ( ! empty( $data['attributes']['classes'] ) ) {
 			$css_classes[] = $data['attributes']['classes'];
@@ -512,5 +533,4 @@ class nanato_addons_acf_field_headline extends \acf_field {
 
 		return $data;
 	}
-
 }

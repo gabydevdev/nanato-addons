@@ -145,19 +145,25 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 	 */
 	public function render_field_settings( $field ) {
 		// Default settings
-		$field = wp_parse_args( $field, array(
-			'show_html_attributes' => 1,
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'show_html_attributes' => 1,
+			)
+		);
 
 		// Show HTML Attributes Section
-		acf_render_field_setting( $field, array(
-			'label'         => __( 'Show HTML Attributes', 'nanato-addons' ),
-			'instructions'  => __( 'Allow users to set custom ID and CSS classes for the info box.', 'nanato-addons' ),
-			'name'          => 'show_html_attributes',
-			'type'          => 'true_false',
-			'ui'            => 1,
-			'default_value' => 1,
-		) );
+		acf_render_field_setting(
+			$field,
+			array(
+				'label'         => __( 'Show HTML Attributes', 'nanato-addons' ),
+				'instructions'  => __( 'Allow users to set custom ID and CSS classes for the info box.', 'nanato-addons' ),
+				'name'          => 'show_html_attributes',
+				'type'          => 'true_false',
+				'ui'            => 1,
+				'default_value' => 1,
+			)
+		);
 	}
 
 	/**
@@ -174,9 +180,12 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 		$field['value'] = $this->initialize_field_values( $field['value'] );
 
 		// Set default field settings
-		$field = wp_parse_args( $field, array(
-			'show_html_attributes' => 1,
-		) );
+		$field = wp_parse_args(
+			$field,
+			array(
+				'show_html_attributes' => 1,
+			)
+		);
 		?>
 		<div class="acf-info-button" id="acf-<?php echo esc_attr( $field['key'] ); ?>" data-key="<?php echo esc_attr( $field['key'] ); ?>">
 			<fieldset>
@@ -292,10 +301,13 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 					</div>
 					<div class="acf-input">
 						<?php
-						$layout_options = apply_filters( 'nanato_addons_acf_field_info_button_layout_options', array(
-							'filled'   => __( 'Filled', 'nanato-addons' ),
-							'outlined' => __( 'Outlined', 'nanato-addons' ),
-						) );
+						$layout_options = apply_filters(
+							'nanato_addons_acf_field_info_button_layout_options',
+							array(
+								'filled'   => __( 'Filled', 'nanato-addons' ),
+								'outlined' => __( 'Outlined', 'nanato-addons' ),
+							)
+						);
 						?>
 						<select name="<?php echo esc_attr( $field['name'] ); ?>[layout]" id="<?php echo esc_attr( $field['name'] ); ?>_layout">
 							<?php foreach ( $layout_options as $value => $label ) : ?>
@@ -315,10 +327,13 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 					</div>
 					<div class="acf-input">
 						<?php
-						$type_options = apply_filters( 'nanato_addons_acf_field_info_button_type_options', array(
-							'standard'   => __( 'Standard', 'nanato-addons' ),
-							'icon_boxed' => __( 'Icon Boxed', 'nanato-addons' ),
-						) );
+						$type_options = apply_filters(
+							'nanato_addons_acf_field_info_button_type_options',
+							array(
+								'standard'   => __( 'Standard', 'nanato-addons' ),
+								'icon_boxed' => __( 'Icon Boxed', 'nanato-addons' ),
+							)
+						);
 						?>
 						<select name="<?php echo esc_attr( $field['name'] ); ?>[type]" id="<?php echo esc_attr( $field['name'] ); ?>_type">
 							<?php foreach ( $type_options as $value => $label ) : ?>
@@ -338,12 +353,15 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 					</div>
 					<div class="acf-input">
 						<?php
-						$style_options = apply_filters( 'nanato_addons_acf_field_info_button_style_options', array(
-							'primary'   => __( 'Primary', 'nanato-addons' ),
-							'secondary' => __( 'Secondary', 'nanato-addons' ),
-							'light'     => __( 'Light', 'nanato-addons' ),
-							'dark'      => __( 'Dark', 'nanato-addons' ),
-						) );
+						$style_options = apply_filters(
+							'nanato_addons_acf_field_info_button_style_options',
+							array(
+								'primary'   => __( 'Primary', 'nanato-addons' ),
+								'secondary' => __( 'Secondary', 'nanato-addons' ),
+								'light'     => __( 'Light', 'nanato-addons' ),
+								'dark'      => __( 'Dark', 'nanato-addons' ),
+							)
+						);
 						?>
 						<select name="<?php echo esc_attr( $field['name'] ); ?>[style]" id="<?php echo esc_attr( $field['name'] ); ?>_style">
 							<?php foreach ( $style_options as $value => $label ) : ?>
@@ -496,7 +514,7 @@ class nanato_addons_acf_field_info_button extends \acf_field {
 			'posts_per_page' => -1,
 			'post_status'    => 'publish',
 			'orderby'        => 'type title',
-			'order'          => 'ASC'
+			'order'          => 'ASC',
 		);
 		$posts    = get_posts( $args );
 

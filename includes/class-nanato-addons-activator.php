@@ -30,7 +30,5 @@ class Nanato_Addons_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-
 	}
-
 }
