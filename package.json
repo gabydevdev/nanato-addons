@@ -1,6 +1,6 @@
 {
   "name": "nanato-addons",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A collection of addons for the Nanato addon framework",
   "scripts": {
     "php:lint": "composer run-script lint",
