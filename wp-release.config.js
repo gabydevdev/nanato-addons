@@ -16,7 +16,9 @@ module.exports = {
     ".env*",
     "tests/",
     "*.md",
-    "phpcs.xml.dist"
+    "phpcs.xml.dist",
+    "*.zip",
+    "wp-release.config.js"
   ],
   "config": {
     "includeGitOps": true,
