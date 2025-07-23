@@ -1,2 +1,67 @@
+# Dependencies
 /vendor/
-composer.lock
+/node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts and distribution files
+*.zip
+*.tar.gz
+build/
+dist/
+package/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.sublime-project
+.sublime-workspace
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# WordPress specific
+wp-config.php
+.htaccess
+
+# PHP specific
+*.php~
+.phpunit.result.cache
+
+# Development and testing
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Cache files
+.cache/
+*.cache
+
+# Coverage reports
+coverage/
+.nyc_output/
+
+# Release automation artifacts (based on your npm scripts)
+*.zip.tmp

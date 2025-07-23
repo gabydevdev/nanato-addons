@@ -5,7 +5,7 @@
  * Description: Custom made addons for Nanato Media Themes.
  * Author: Nanato Media
  * Author URI: https://github.com/nanatomedia
- * Version: 1.0.0
+ * Version: 1.0.2
  * Text Domain: nanato-addons
  *
  * @package Nanato_Addons
