@@ -41,6 +41,15 @@ class Nanato_Addons_Public {
 	private $version;
 
 	/**
+	 * Holds the plugin options.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      array    $noindex_options    The noindex options.
+	 */
+	private $noindex_options;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -51,6 +60,7 @@ class Nanato_Addons_Public {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
+		$this->noindex_options = get_option( 'nanato_addons_noindex_options', array() );
 	}
 
 	/**
@@ -95,5 +105,39 @@ class Nanato_Addons_Public {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/nanato-addons-public.js', array( 'jquery' ), $this->version, false );
+	}
+
+	/**
+	 * Adds a noindex meta tag to archive pages based on the plugin options.
+	 *
+	 * @since    1.0.0
+	 */
+	public function add_noindex_meta() {
+		// Skip if no options are set
+		if ( empty( $this->noindex_options ) ) {
+			return;
+		}
+
+		$paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
+
+		// Check if we should add noindex based on current page type and settings
+		$should_noindex = false;
+
+		if ( is_category() && ! empty( $this->noindex_options['category'] ) ) {
+			$should_noindex = true;
+		} elseif ( is_tag() && ! empty( $this->noindex_options['tag'] ) ) {
+			$should_noindex = true;
+		} elseif ( is_author() && ! empty( $this->noindex_options['author'] ) ) {
+			$should_noindex = true;
+		} elseif ( is_date() && ! empty( $this->noindex_options['date'] ) ) {
+			$should_noindex = true;
+		}
+
+		// If we should noindex and either it's not paginated-only mode or we're on page 2+
+		if ( $should_noindex ) {
+			if ( empty( $this->noindex_options['paginated_only'] ) || $paged > 1 ) {
+				echo '<meta name="robots" content="noindex, follow">' . "\n";
+			}
+		}
 	}
 }
