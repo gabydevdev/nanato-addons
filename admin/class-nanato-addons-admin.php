@@ -41,6 +41,15 @@ class Nanato_Addons_Admin {
 	private $version;
 
 	/**
+	 * Holds the plugin options.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      array    $noindex_options    The noindex options.
+	 */
+	private $noindex_options;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -51,6 +60,7 @@ class Nanato_Addons_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
+		$this->noindex_options = get_option( 'nanato_addons_noindex_options', array() );
 	}
 
 	/**
@@ -95,5 +105,48 @@ class Nanato_Addons_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/nanato-addons-admin.js', array( 'jquery' ), $this->version, false );
+	}
+
+	/**
+	 * Adds the options page to the admin menu.
+	 *
+	 * @since    1.0.0
+	 */
+	public function add_admin_menu() {
+		add_options_page(
+			__( 'Nanato Addons Settings', 'nanato-addons' ),
+			__( 'Nanato Addons', 'nanato-addons' ),
+			'manage_options',
+			'nanato-addons',
+			array( $this, 'options_page' )
+		);
+	}
+
+	/**
+	 * Registers the plugin settings.
+	 *
+	 * @since    1.0.0
+	 */
+	public function register_settings() {
+		register_setting( 'nanato_addons_noindex', 'nanato_addons_noindex_options' );
+	}
+
+	/**
+	 * Renders the options page.
+	 *
+	 * @since    1.0.0
+	 */
+	public function options_page() {
+		require_once plugin_dir_path( __FILE__ ) . 'partials/nanato-addons-admin-display.php';
+	}
+
+	/**
+	 * Get the noindex options.
+	 *
+	 * @since    1.0.0
+	 * @return   array    The noindex options.
+	 */
+	public function get_noindex_options() {
+		return $this->noindex_options;
 	}
 }
