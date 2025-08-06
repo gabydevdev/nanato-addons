@@ -149,4 +149,75 @@ class Nanato_Addons_Admin {
 	public function get_noindex_options() {
 		return $this->noindex_options;
 	}
+
+	/**
+	 * Enable SVG uploads by adding SVG to allowed mime types.
+	 *
+	 * @since    1.0.0
+	 * @param    array $mime_types    Current array of mime types.
+	 * @return   array                Modified array of mime types.
+	 */
+	public function enable_svg_uploads( $mime_types ) {
+		$mime_types['svg']  = 'image/svg+xml';
+		$mime_types['svgz'] = 'image/svg+xml';
+		return $mime_types;
+	}
+
+	/**
+	 * Fix SVG display in media library.
+	 *
+	 * @since    1.0.0
+	 * @param    array  $response    Array of prepared attachment data.
+	 * @param    object $attachment  Attachment object.
+	 * @param    array  $meta        Array of attachment meta data.
+	 * @return   array               Modified response.
+	 */
+	public function fix_svg_display( $response, $attachment, $meta ) {
+		if ( $response['mime'] === 'image/svg+xml' ) {
+			$response['image'] = array(
+				'src'    => $response['url'],
+				'width'  => 150,
+				'height' => 150,
+			);
+		}
+		return $response;
+	}
+
+	/**
+	 * Add SVG support to WordPress media uploader.
+	 * Sanitizes SVG files for security.
+	 *
+	 * @since    1.0.0
+	 * @param    array $data     An array of slashed post data.
+	 * @param    array $postarr  An array of sanitized, but otherwise unmodified post data.
+	 * @return   array           Modified post data.
+	 */
+	public function sanitize_svg_upload( $data, $postarr ) {
+		// Only process SVG files
+		if ( ! isset( $_FILES['async-upload']['tmp_name'] ) ) {
+			return $data;
+		}
+
+		$file_tmp_name = $_FILES['async-upload']['tmp_name'];
+		$file_name     = $_FILES['async-upload']['name'];
+		$file_type     = wp_check_filetype( $file_name );
+
+		if ( $file_type['type'] === 'image/svg+xml' ) {
+			// Basic SVG sanitization - remove script tags and on* attributes
+			$svg_content = file_get_contents( $file_tmp_name );
+			
+			if ( $svg_content !== false ) {
+				// Remove script tags
+				$svg_content = preg_replace( '/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/mi', '', $svg_content );
+				
+				// Remove on* event attributes
+				$svg_content = preg_replace( '/\s*on\w+\s*=\s*["\'][^"\']*["\']/i', '', $svg_content );
+				
+				// Write cleaned content back
+				file_put_contents( $file_tmp_name, $svg_content );
+			}
+		}
+
+		return $data;
+	}
 }

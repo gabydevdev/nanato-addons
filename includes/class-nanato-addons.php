@@ -152,6 +152,11 @@ class Nanato_Addons {
 		// Add admin menu and settings for noindex functionality
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_admin_menu' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_settings' );
+
+		// Enable SVG uploads and sanitization
+		$this->loader->add_filter( 'upload_mimes', $plugin_admin, 'enable_svg_uploads' );
+		$this->loader->add_filter( 'wp_prepare_attachment_for_js', $plugin_admin, 'fix_svg_display', 10, 3 );
+		$this->loader->add_filter( 'wp_insert_post_data', $plugin_admin, 'sanitize_svg_upload', 10, 2 );
 	}
 
 	/**
