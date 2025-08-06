@@ -5,7 +5,7 @@
  * Description: Custom made addons for Nanato Media Themes including ACF fields and SEO optimization features.
  * Author: Nanato Media
  * Author URI: https://github.com/nanatomedia
- * Version: 1.0.5
+ * Version: 1.0.6
  * Text Domain: nanato-addons
  *
  * @package Nanato_Addons
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
-define( 'NANATO_ADDONS_VERSION', '1.0.5' );
+define( 'NANATO_ADDONS_VERSION', '1.0.6' );
 define( 'NANATO_ADDONS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NANATO_ADDONS_URL', plugin_dir_url( __FILE__ ) );
 

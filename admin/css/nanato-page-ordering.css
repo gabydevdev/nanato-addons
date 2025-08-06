@@ -1,0 +1,103 @@
+/**
+ * Nanato Page Ordering Styles
+ * 
+ * Styles for the drag and drop page ordering functionality.
+ * 
+ * @package Nanato_Addons
+ * @since   1.0.6
+ */
+
+/* Main sortable table styles */
+.wp-list-table .ui-sortable tr {
+	cursor: move;
+}
+
+.wp-list-table .ui-sortable tr.inline-editor {
+	cursor: default;
+}
+
+.wp-list-table.nanato-updating tr {
+	cursor: default;
+}
+
+/* Sortable placeholder styles */
+.wp-list-table .ui-sortable-placeholder {
+	outline: 1px dashed #bbb;
+	background: #f1f1f1;
+	visibility: visible !important;
+	height: 1.5em;
+}
+
+/* Dragged item styles */
+.wp-list-table .ui-sortable-helper {
+	background-color: #fff;
+	outline: 1px solid #e1e1e1;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Row being updated styles */
+.nanato-updating-row .check-column {
+	display: table-cell; /* Reset from core .spinner */
+	float: none; /* Reset from core .spinner */
+	margin: 0; /* Reset from core .spinner */
+	background-position: 9px 9px;
+}
+
+.nanato-updating-row .check-column input {
+	visibility: hidden;
+}
+
+/* Help tab reset button */
+#nanato-page-ordering-reset {
+	display: inline-block;
+	margin-top: 10px;
+	padding: 5px 10px;
+	background: #0073aa;
+	color: #fff;
+	text-decoration: none;
+	border-radius: 3px;
+	border: none;
+	cursor: pointer;
+}
+
+#nanato-page-ordering-reset:hover {
+	background: #005a87;
+	color: #fff;
+}
+
+/* Row action links for hierarchical post types */
+.nanato-move-action {
+	color: #666;
+}
+
+.nanato-move-action:hover {
+	color: #0073aa;
+}
+
+/* Loading states */
+.nanato-updating {
+	opacity: 0.6;
+}
+
+.nanato-updating-row {
+	opacity: 0.8;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 782px) {
+	.wp-list-table .ui-sortable tr {
+		cursor: default; /* Disable sorting on mobile */
+	}
+	
+	.wp-list-table.nanato-page-ordering tr {
+		cursor: move; /* Enable only when actively sorting */
+	}
+}
+
+/* High DPI display adjustments */
+@media screen and (-webkit-min-device-pixel-ratio: 2), 
+       screen and (min-resolution: 192dpi) {
+	.nanato-updating-row .check-column {
+		background-size: 16px 16px;
+	}
+}
