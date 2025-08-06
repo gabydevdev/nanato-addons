@@ -84,6 +84,7 @@ class Nanato_Addons {
 	 * - Nanato_Addons_i18n. Defines internationalization functionality.
 	 * - Nanato_Addons_Admin. Defines all hooks for the admin area.
 	 * - Nanato_Addons_Public. Defines all hooks for the public side of the site.
+	 * - Nanato_Addons_Page_Ordering. Defines page ordering functionality.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
@@ -115,6 +116,11 @@ class Nanato_Addons {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( __DIR__ ) . 'public/class-nanato-addons-public.php';
+
+		/**
+		 * The class responsible for page ordering functionality.
+		 */
+		require_once plugin_dir_path( __DIR__ ) . 'includes/class-nanato-addons-page-ordering.php';
 
 		$this->loader = new Nanato_Addons_Loader();
 	}
@@ -163,6 +169,9 @@ class Nanato_Addons {
 
 		// Auto-insert SVG class for Classic Editor
 		$this->loader->add_filter( 'media_send_to_editor', $plugin_admin, 'auto_insert_svg_class', 10, 3 );
+
+		// Initialize page ordering functionality
+		new Nanato_Addons_Page_Ordering( $this->get_plugin_name(), $this->get_version() );
 	}
 
 	/**

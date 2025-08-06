@@ -8,9 +8,55 @@ This plugin provides a suite of custom ACF field types, SEO optimization feature
 
 ## Version
 
-**Current Version:** 1.0.5
+**Current Version:** 1.0.6
 
 ## Features
+
+### Page Ordering System 📋
+
+Advanced drag-and-drop page ordering functionality with comprehensive management options:
+
+#### Core Ordering Features
+- **Drag & Drop Interface**: Intuitive reordering with visual feedback and loading states
+- **Multiple Post Types**: Support for pages, posts, and custom post types
+- **Hierarchical Management**: Maintains parent-child relationships during reordering
+- **Real-time Updates**: AJAX processing without page refreshes
+- **Batch Processing**: Efficient handling of multiple items with optimized database queries
+
+#### REST API Integration
+- **Programmatic Access**: `/wp-json/nanato-addons/v1/page-ordering` endpoint
+- **Bulk Operations**: Update multiple post orders in a single request
+- **Validation**: Comprehensive data validation and error handling
+- **Authentication**: Respects WordPress user capabilities and permissions
+
+#### Advanced Management
+- **User Permissions**: Automatic capability checking for edit rights
+- **Settings Integration**: Configure which post types are sortable
+- **WordPress Standards**: Follows WordPress coding standards and best practices
+- **Performance Optimized**: Minimal database queries and efficient processing
+
+#### Usage Examples
+```javascript
+// Programmatic ordering via REST API
+fetch('/wp-json/nanato-addons/v1/page-ordering', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': wpApiSettings.nonce
+    },
+    body: JSON.stringify({
+        post_id: 123,
+        menu_order: 5,
+        post_type: 'page'
+    })
+});
+```
+
+#### Admin Interface
+- **Settings Page**: Configure sortable post types under Settings → Nanato Addons
+- **Visual Feedback**: Drag placeholders and loading indicators
+- **Mobile Responsive**: Touch-friendly interface for mobile devices
+- **Error Handling**: Clear feedback for successful operations and errors
 
 ### SVG Support 🎨
 
@@ -125,6 +171,48 @@ An enhanced button field providing:
 
 ## Usage
 
+### Page Ordering
+
+After activation, page ordering functionality becomes available:
+
+#### Enable Page Ordering
+1. Go to **Settings > Nanato Addons > Page Ordering** tab
+2. Select which post types should be sortable
+3. Enable sorting for posts if desired (adds page-attributes support)
+4. **Save Settings**
+
+#### Using Drag & Drop Ordering
+
+**In Post List Pages:**
+1. Navigate to any enabled post type list (Pages, Posts, etc.)
+2. Drag and drop items to reorder them
+3. Changes save automatically with visual feedback
+4. Hierarchical relationships are maintained
+
+**Programmatic Access:**
+```javascript
+// Update post order via REST API
+const response = await fetch('/wp-json/nanato-addons/v1/page-ordering', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': wpApiSettings.nonce
+    },
+    body: JSON.stringify({
+        post_id: 123,
+        menu_order: 5,
+        post_type: 'page'
+    })
+});
+```
+
+#### Page Ordering Configuration Options
+
+**Enable for Posts**: Add page-attributes support to posts for ordering
+**Sortable Post Types**: Select custom post types that should be sortable
+**Automatic Detection**: Hierarchical post types are automatically sortable
+**Permission Checks**: Users must have edit capabilities for the post type
+
 ### SVG Support
 
 After activation, SVG support is automatically enabled:
@@ -188,12 +276,18 @@ nanato-addons/
 ├── acf-info-box/         # Info Box field implementation
 ├── acf-info-button/      # Info Button field implementation
 ├── admin/                # Admin-specific functionality
+│   ├── css/              # Admin stylesheets
+│   │   └── nanato-page-ordering.css # Page ordering interface styles
+│   └── js/               # Admin JavaScript files
+│       └── nanato-page-ordering.js  # Page ordering drag-drop functionality
 ├── assets/               # CSS and JavaScript assets
 │   ├── css/              # Stylesheets
 │   │   └── svg-inline.css # SVG inline rendering styles
 │   └── js/               # JavaScript files
 │       └── svg-inline.js  # SVG inline rendering script
 ├── includes/             # Core plugin classes
+│   ├── class-nanato-addons-page-ordering.php # Page ordering functionality
+│   └── ... # Other core classes
 ├── public/               # Public-facing functionality
 ├── composer.json         # PHP dependencies
 ├── package.json          # Node.js dependencies
@@ -234,6 +328,12 @@ composer run format
 
 The plugin provides several filters for customization:
 
+#### Page Ordering Customization
+- `nanato_page_ordering_is_sortable` - Control which post types are sortable
+- `nanato_page_ordering_edit_rights` - Modify user edit permissions
+- `nanato_page_ordering_ajax_check` - Customize AJAX request validation
+- `nanato_page_ordering_new_order` - Modify order calculation logic
+
 #### SVG Support Customization
 - `nanato_addons_svg_target_class` - Modify the default target CSS class
 - `nanato_addons_svg_sanitize` - Customize SVG sanitization process
@@ -251,6 +351,19 @@ The plugin provides several filters for customization:
 
 ### JavaScript Events
 
+The plugin dispatches custom events for integration:
+
+#### Page Ordering Events
+```javascript
+// Listen for page ordering events
+document.addEventListener('pageOrderingComplete', function(event) {
+    const postId = event.detail.postId;
+    const newOrder = event.detail.newOrder;
+    console.log('Page order updated:', postId, newOrder);
+});
+```
+
+#### SVG Events
 The SVG inline rendering system dispatches custom events:
 
 ```javascript
@@ -296,6 +409,20 @@ For support and questions:
 - **GitHub:** [https://github.com/gabydevdev/nanato-addons](https://github.com/gabydevdev/nanato-addons)
 
 ## Changelog
+
+### Version 1.0.6
+- **NEW**: Comprehensive page ordering system with drag-and-drop functionality
+- **NEW**: REST API endpoint for programmatic page ordering
+- **NEW**: AJAX-powered real-time reordering without page refreshes
+- **NEW**: Support for hierarchical post type management
+- **NEW**: User permission checking and capability validation
+- **NEW**: Batch processing for efficient database operations
+- **NEW**: Admin settings page for configuring sortable post types
+- **NEW**: Mobile-responsive drag-and-drop interface
+- **NEW**: Custom JavaScript events for developer integration
+- **IMPROVED**: Enhanced admin interface with page ordering tab
+- **IMPROVED**: Better performance with optimized database queries
+- **SECURITY**: Comprehensive nonce verification and user capability checks
 
 ### Version 1.0.5
 - **NEW**: Comprehensive SVG support with security and inline rendering

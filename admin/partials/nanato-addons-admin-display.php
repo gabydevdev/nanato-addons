@@ -16,6 +16,8 @@
 $noindex_options = get_option( 'nanato_addons_noindex_options', array() );
 // Get the SVG options
 $svg_options = get_option( 'nanato_addons_svg_options', array() );
+// Get the page ordering options
+$page_ordering_options = get_option( 'nanato_addons_page_ordering_options', array() );
 ?>
 
 <div class="wrap">
@@ -24,6 +26,7 @@ $svg_options = get_option( 'nanato_addons_svg_options', array() );
 	<h2 class="nav-tab-wrapper">
 		<a href="#noindex-settings" class="nav-tab nav-tab-active" data-tab="noindex-settings"><?php esc_html_e( 'Noindex Settings', 'nanato-addons' ); ?></a>
 		<a href="#svg-settings" class="nav-tab" data-tab="svg-settings"><?php esc_html_e( 'SVG Support', 'nanato-addons' ); ?></a>
+		<a href="#page-ordering-settings" class="nav-tab" data-tab="page-ordering-settings"><?php esc_html_e( 'Page Ordering', 'nanato-addons' ); ?></a>
 	</h2>
 	
 	<div id="noindex-settings" class="tab-content">
@@ -166,6 +169,114 @@ $svg_options = get_option( 'nanato_addons_svg_options', array() );
 							
 							<p><strong><?php esc_html_e( 'In Classic Editor or HTML:', 'nanato-addons' ); ?></strong></p>
 							<code>&lt;img class="<?php echo esc_attr( $target_class ); ?>" src="your-image.svg" alt="Description" /&gt;</code>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<?php submit_button(); ?>
+		</form>
+	</div>
+
+	<div id="page-ordering-settings" class="tab-content" style="display: none;">
+		<h3><?php esc_html_e( 'Page Ordering Settings', 'nanato-addons' ); ?></h3>
+		<p><?php esc_html_e( 'Configure drag and drop page ordering functionality for your content.', 'nanato-addons' ); ?></p>
+		
+		<form method="post" action="options.php">
+			<?php settings_fields( 'nanato_addons_page_ordering' ); ?>
+			<table class="form-table">
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Default Features', 'nanato-addons' ); ?></th>
+					<td>
+						<p><?php esc_html_e( '✅ Drag and drop ordering for Pages (hierarchical post types)', 'nanato-addons' ); ?></p>
+						<p><?php esc_html_e( '✅ Drag and drop ordering for Custom Post Types with page-attributes support', 'nanato-addons' ); ?></p>
+						<p><?php esc_html_e( '✅ AJAX-powered real-time updates', 'nanato-addons' ); ?></p>
+						<p><?php esc_html_e( '✅ Hierarchical relationship management for pages', 'nanato-addons' ); ?></p>
+						<p><?php esc_html_e( '✅ REST API endpoint for programmatic ordering', 'nanato-addons' ); ?></p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<label for="ordering_batch_size"><?php esc_html_e( 'Batch Processing Size', 'nanato-addons' ); ?></label>
+					</th>
+					<td>
+						<?php $batch_size = isset( $page_ordering_options['batch_size'] ) ? $page_ordering_options['batch_size'] : 50; ?>
+						<input type="number" id="ordering_batch_size" name="nanato_addons_page_ordering_options[batch_size]" value="<?php echo esc_attr( $batch_size ); ?>" min="5" max="100" class="small-text" />
+						<p class="description">
+							<?php esc_html_e( 'Number of items to process in each AJAX request (default: 50). Lower values help with slower hosting environments.', 'nanato-addons' ); ?>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<label for="enable_for_posts"><?php esc_html_e( 'Enable for Posts', 'nanato-addons' ); ?></label>
+					</th>
+					<td>
+						<input type="checkbox" id="enable_for_posts" name="nanato_addons_page_ordering_options[enable_for_posts]" value="1" <?php checked( ! empty( $page_ordering_options['enable_for_posts'] ) ); ?> />
+						<label for="enable_for_posts">
+							<?php esc_html_e( 'Enable page ordering for regular Posts', 'nanato-addons' ); ?>
+						</label>
+						<p class="description">
+							<?php esc_html_e( 'By default, regular Posts are ordered by date. This option adds page-attributes support to enable manual ordering.', 'nanato-addons' ); ?>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Custom Post Types', 'nanato-addons' ); ?></th>
+					<td>
+						<?php
+						$post_types = get_post_types( array( 'public' => true, '_builtin' => false ), 'objects' );
+						if ( ! empty( $post_types ) ) :
+						?>
+							<fieldset>
+								<?php foreach ( $post_types as $post_type ) : ?>
+									<?php
+									$is_enabled = isset( $page_ordering_options['post_types'][ $post_type->name ] ) ? 
+										$page_ordering_options['post_types'][ $post_type->name ] : 
+										( post_type_supports( $post_type->name, 'page-attributes' ) || is_post_type_hierarchical( $post_type->name ) );
+									?>
+									<label>
+										<input type="checkbox" name="nanato_addons_page_ordering_options[post_types][<?php echo esc_attr( $post_type->name ); ?>]" value="1" <?php checked( $is_enabled ); ?>>
+										<?php echo esc_html( $post_type->label ); ?> (<?php echo esc_html( $post_type->name ); ?>)
+										<?php if ( is_post_type_hierarchical( $post_type->name ) ) : ?>
+											<span class="description"> - <?php esc_html_e( 'Hierarchical', 'nanato-addons' ); ?></span>
+										<?php elseif ( post_type_supports( $post_type->name, 'page-attributes' ) ) : ?>
+											<span class="description"> - <?php esc_html_e( 'Has page-attributes', 'nanato-addons' ); ?></span>
+										<?php endif; ?>
+									</label><br>
+								<?php endforeach; ?>
+							</fieldset>
+						<?php else : ?>
+							<p><?php esc_html_e( 'No custom post types found.', 'nanato-addons' ); ?></p>
+						<?php endif; ?>
+						<p class="description">
+							<?php esc_html_e( 'Select which custom post types should have drag and drop ordering enabled.', 'nanato-addons' ); ?>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'How to Use', 'nanato-addons' ); ?></th>
+					<td>
+						<div class="nanato-info-box">
+							<h4><?php esc_html_e( 'Using Page Ordering:', 'nanato-addons' ); ?></h4>
+							<ol>
+								<li><?php esc_html_e( 'Go to Pages or any enabled post type admin page', 'nanato-addons' ); ?></li>
+								<li><?php esc_html_e( 'Click "Sort by Order" filter link to enable ordering mode', 'nanato-addons' ); ?></li>
+								<li><?php esc_html_e( 'Drag and drop rows to reorder them', 'nanato-addons' ); ?></li>
+								<li><?php esc_html_e( 'Changes are saved automatically via AJAX', 'nanato-addons' ); ?></li>
+							</ol>
+							
+							<h4><?php esc_html_e( 'Additional Features:', 'nanato-addons' ); ?></h4>
+							<ul>
+								<li><?php esc_html_e( '📋 Row actions for hierarchical post types (move under parent/sibling)', 'nanato-addons' ); ?></li>
+								<li><?php esc_html_e( '🔄 Reset ordering functionality in help tab', 'nanato-addons' ); ?></li>
+								<li><?php esc_html_e( '🎯 User capability awareness (only editors/admins can reorder)', 'nanato-addons' ); ?></li>
+								<li><?php esc_html_e( '⚡ Batch processing for large datasets', 'nanato-addons' ); ?></li>
+							</ul>
+							
+							<h4><?php esc_html_e( 'REST API:', 'nanato-addons' ); ?></h4>
+							<p><strong><?php esc_html_e( 'Endpoint:', 'nanato-addons' ); ?></strong> <code>/wp-json/nanato-addons/v1/page_ordering</code></p>
+							<p><strong><?php esc_html_e( 'Method:', 'nanato-addons' ); ?></strong> POST</p>
+							<p><strong><?php esc_html_e( 'Parameters:', 'nanato-addons' ); ?></strong> id, previd, nextid, start (optional), exclude (optional)</p>
 						</div>
 					</td>
 				</tr>

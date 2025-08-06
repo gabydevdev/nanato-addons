@@ -129,6 +129,7 @@ class Nanato_Addons_Admin {
 	 */
 	public function register_settings() {
 		register_setting( 'nanato_addons_noindex', 'nanato_addons_noindex_options' );
+		register_setting( 'nanato_addons_page_ordering', 'nanato_addons_page_ordering_options' );
 	}
 
 	/**
