@@ -1,16 +1,64 @@
 # Nanato Addons
 
-A collection of custom WordPress addons to extend content management and modern web development.
+A collection of custom WordPress addons to extend content management and modern web development with advanced ACF fields, SEO optimization, and comprehensive SVG support.
 
 ## Description
 
-This plugin provides a suite of custom ACF field types and SEO optimization features to build rich, interactive websites with ease. Each field type is designed with modern web standards in mind, featuring responsive interfaces and comprehensive customization options.
+This plugin provides a suite of custom ACF field types, SEO optimization features, and advanced SVG support to build rich, interactive websites with ease. Each field type is designed with modern web standards in mind, featuring responsive interfaces and comprehensive customization options.
 
 ## Version
 
 **Current Version:** 1.0.5
 
 ## Features
+
+### SVG Support 🎨
+
+Advanced SVG file support with security, optimization, and inline rendering capabilities:
+
+#### Core SVG Features
+- **Secure SVG Uploads**: Upload SVG files to your media library with automatic sanitization
+- **Media Library Integration**: Proper SVG thumbnails and file information display
+- **Security Sanitization**: Removes potentially harmful scripts and event handlers
+- **MIME Type Support**: Full WordPress media library integration
+
+#### Inline SVG Rendering
+- **CSS Class Targeting**: Add `style-svg` class to convert images to inline SVG
+- **Direct Element Styling**: Style SVG paths, circles, and elements with CSS
+- **JavaScript Access**: Manipulate SVG elements with JavaScript
+- **Animation Support**: CSS animations and hover effects on SVG elements
+- **Custom Target Class**: Configure your own CSS class for targeting
+
+#### Advanced Options
+- **Force Inline SVG**: Automatically convert ALL SVG images to inline (perfect for page builders)
+- **Auto Insert Class**: Automatically add target class when inserting SVGs in Classic Editor
+- **Dynamic Content Support**: Handles dynamically loaded content and page builders
+- **Responsive Design**: SVG images scale properly on all devices
+
+#### Usage Examples
+```html
+<!-- Basic Usage: Add class to any img tag -->
+<img class="style-svg" src="icon.svg" alt="My Icon" />
+
+<!-- The above becomes inline SVG automatically -->
+<svg class="replaced-svg svg-replaced-1" viewBox="0 0 24 24">
+  <title>My Icon</title>
+  <path d="..."/>
+</svg>
+```
+
+#### CSS Styling Example
+```css
+/* Style SVG elements directly */
+.replaced-svg path {
+    fill: #ff6b6b;
+    transition: fill 0.3s ease;
+}
+
+.replaced-svg:hover path {
+    fill: #4ecdc4;
+}
+```
 
 ### SEO Optimization
 
@@ -77,6 +125,46 @@ An enhanced button field providing:
 
 ## Usage
 
+### SVG Support
+
+After activation, SVG support is automatically enabled:
+
+#### Basic SVG Upload
+1. Navigate to **Media Library** in your WordPress admin
+2. Upload SVG files like any other image
+3. SVG files will display properly with thumbnails
+
+#### Enable Inline SVG Rendering
+1. Go to **Settings > Nanato Addons > SVG Support** tab
+2. Check **"Enable Inline SVG"**
+3. Configure your target CSS class (default: `style-svg`)
+4. **Save Settings**
+
+#### Using Inline SVG
+
+**In Gutenberg/Block Editor:**
+1. Add an Image block
+2. Upload your SVG file
+3. In the block settings, add the CSS class: `style-svg`
+4. The image will automatically convert to inline SVG on the frontend
+
+**In Classic Editor:**
+- Enable **"Auto Insert Class"** option for automatic class insertion
+- Or manually add: `<img class="style-svg" src="image.svg" alt="Description" />`
+
+**For Page Builders (Divi, Elementor, etc.):**
+- Enable **"Force Inline SVG"** to automatically convert ALL SVG images
+- No CSS classes needed - works automatically
+
+#### SVG Configuration Options
+
+**Enable Inline SVG**: Base functionality for inline rendering
+**CSS Target Class**: Customize the class name (default: `style-svg`)
+**Force Inline SVG**: Convert ALL SVG images automatically (use with caution)
+**Auto Insert Class**: Automatically add target class in Classic Editor
+
+### ACF Field Types
+
 After activation, the custom field types will be available when creating or editing ACF field groups:
 
 1. Navigate to **Custom Fields > Field Groups** in your WordPress admin
@@ -100,6 +188,11 @@ nanato-addons/
 ├── acf-info-box/         # Info Box field implementation
 ├── acf-info-button/      # Info Button field implementation
 ├── admin/                # Admin-specific functionality
+├── assets/               # CSS and JavaScript assets
+│   ├── css/              # Stylesheets
+│   │   └── svg-inline.css # SVG inline rendering styles
+│   └── js/               # JavaScript files
+│       └── svg-inline.js  # SVG inline rendering script
 ├── includes/             # Core plugin classes
 ├── public/               # Public-facing functionality
 ├── composer.json         # PHP dependencies
@@ -141,6 +234,11 @@ composer run format
 
 The plugin provides several filters for customization:
 
+#### SVG Support Customization
+- `nanato_addons_svg_target_class` - Modify the default target CSS class
+- `nanato_addons_svg_sanitize` - Customize SVG sanitization process
+- `nanato_addons_svg_force_inline` - Control force inline behavior
+
 #### Button Field Customization
 - `nanato_addons_button_layouts` - Modify available button layouts
 - `nanato_addons_button_styles` - Customize button style options
@@ -150,6 +248,19 @@ The plugin provides several filters for customization:
 
 #### Info Box Customization
 - `nanato_addons_info_box_styles` - Customize info box styling options
+
+### JavaScript Events
+
+The SVG inline rendering system dispatches custom events:
+
+```javascript
+// Listen for SVG replacement events
+document.addEventListener('svgReplaced', function(event) {
+    const svg = event.detail.svg;
+    const replacements = event.detail.replacements;
+    console.log('SVG replaced:', svg);
+});
+```
 
 ### Constants
 
@@ -186,9 +297,21 @@ For support and questions:
 
 ## Changelog
 
+### Version 1.0.5
+- **NEW**: Comprehensive SVG support with security and inline rendering
+- **NEW**: SVG upload support with automatic sanitization
+- **NEW**: Inline SVG rendering with CSS class targeting
+- **NEW**: Force inline SVG option for page builders
+- **NEW**: Auto-insert class functionality for Classic Editor
+- **NEW**: Advanced SVG settings page with multiple configuration options
+- **NEW**: Dynamic content support with MutationObserver
+- **NEW**: Custom CSS and JavaScript assets for SVG handling
+- **IMPROVED**: Enhanced admin interface with tabbed settings
+- **IMPROVED**: Better media library integration for SVG files
+- **SECURITY**: SVG sanitization removes scripts and event handlers
+
 ### Version 1.0.4
-- Current stable release
-- Includes all four custom ACF field types
+- Stable release with all four custom ACF field types
 - Enhanced admin interface
 - Improved code standards compliance
 

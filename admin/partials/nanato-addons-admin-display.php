@@ -14,13 +14,16 @@
 
 // Get the noindex options
 $noindex_options = get_option( 'nanato_addons_noindex_options', array() );
+// Get the SVG options
+$svg_options = get_option( 'nanato_addons_svg_options', array() );
 ?>
 
 <div class="wrap">
 	<h1><?php esc_html_e( 'Nanato Addons Settings', 'nanato-addons' ); ?></h1>
 	
 	<h2 class="nav-tab-wrapper">
-		<a href="#noindex-settings" class="nav-tab nav-tab-active"><?php esc_html_e( 'Noindex Settings', 'nanato-addons' ); ?></a>
+		<a href="#noindex-settings" class="nav-tab nav-tab-active" data-tab="noindex-settings"><?php esc_html_e( 'Noindex Settings', 'nanato-addons' ); ?></a>
+		<a href="#svg-settings" class="nav-tab" data-tab="svg-settings"><?php esc_html_e( 'SVG Support', 'nanato-addons' ); ?></a>
 	</h2>
 	
 	<div id="noindex-settings" class="tab-content">
@@ -69,6 +72,107 @@ $noindex_options = get_option( 'nanato_addons_noindex_options', array() );
 			<?php submit_button(); ?>
 		</form>
 	</div>
+
+	<div id="svg-settings" class="tab-content" style="display: none;">
+		<h3><?php esc_html_e( 'SVG Support Settings', 'nanato-addons' ); ?></h3>
+		<p><?php esc_html_e( 'Configure SVG upload support and inline rendering options.', 'nanato-addons' ); ?></p>
+		
+		<form method="post" action="options.php">
+			<?php settings_fields( 'nanato_addons_svg' ); ?>
+			<table class="form-table">
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Basic SVG Support', 'nanato-addons' ); ?></th>
+					<td>
+						<p><?php esc_html_e( '✅ SVG uploads are enabled by default', 'nanato-addons' ); ?></p>
+						<p><?php esc_html_e( '✅ Basic security sanitization is active', 'nanato-addons' ); ?></p>
+						<p><?php esc_html_e( '✅ Media library display is fixed', 'nanato-addons' ); ?></p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<label for="enable_inline_svg"><?php esc_html_e( 'Enable Inline SVG', 'nanato-addons' ); ?></label>
+					</th>
+					<td>
+						<input type="checkbox" id="enable_inline_svg" name="nanato_addons_svg_options[enable_inline_svg]" value="1" <?php checked( ! empty( $svg_options['enable_inline_svg'] ) ); ?> />
+						<label for="enable_inline_svg">
+							<?php esc_html_e( 'Enable inline SVG rendering for images with the target class', 'nanato-addons' ); ?>
+						</label>
+						<p class="description">
+							<?php esc_html_e( 'When enabled, img tags with the target class will be replaced with inline SVG code, allowing direct CSS styling of SVG elements.', 'nanato-addons' ); ?>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<label for="svg_target_class"><?php esc_html_e( 'CSS Target Class', 'nanato-addons' ); ?></label>
+					</th>
+					<td>
+						<?php $target_class = isset( $svg_options['svg_target_class'] ) ? $svg_options['svg_target_class'] : 'style-svg'; ?>
+						<input type="text" id="svg_target_class" name="nanato_addons_svg_options[svg_target_class]" value="<?php echo esc_attr( $target_class ); ?>" class="regular-text" />
+						<p class="description">
+							<?php esc_html_e( 'CSS class to target for inline SVG replacement. Default: style-svg', 'nanato-addons' ); ?>
+							<br>
+							<?php esc_html_e( 'Example usage:', 'nanato-addons' ); ?> 
+							<code>&lt;img class="<?php echo esc_attr( $target_class ); ?>" src="image.svg" alt="My SVG" /&gt;</code>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<label for="force_inline_svg"><?php esc_html_e( 'Force Inline SVG', 'nanato-addons' ); ?></label>
+					</th>
+					<td>
+						<input type="checkbox" id="force_inline_svg" name="nanato_addons_svg_options[force_inline_svg]" value="1" <?php checked( ! empty( $svg_options['force_inline_svg'] ) ); ?> />
+						<label for="force_inline_svg">
+							<?php esc_html_e( 'Force all SVG images to render inline', 'nanato-addons' ); ?>
+						</label>
+						<p class="description">
+							<strong><?php esc_html_e( 'Use with caution!', 'nanato-addons' ); ?></strong>
+							<?php esc_html_e( 'This will automatically convert ALL SVG images to inline, regardless of CSS classes. Useful for page builders that don\'t allow custom CSS classes.', 'nanato-addons' ); ?>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<label for="auto_insert_class"><?php esc_html_e( 'Auto Insert Class', 'nanato-addons' ); ?></label>
+					</th>
+					<td>
+						<input type="checkbox" id="auto_insert_class" name="nanato_addons_svg_options[auto_insert_class]" value="1" <?php checked( ! empty( $svg_options['auto_insert_class'] ) ); ?> />
+						<label for="auto_insert_class">
+							<?php esc_html_e( 'Automatically add target class to SVG images', 'nanato-addons' ); ?>
+						</label>
+						<p class="description">
+							<?php esc_html_e( '(Classic Editor Only) Automatically adds the target class when inserting SVG images. Removes default WordPress classes and only affects SVG files.', 'nanato-addons' ); ?>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'How it works', 'nanato-addons' ); ?></th>
+					<td>
+						<div class="nanato-info-box">
+							<h4><?php esc_html_e( 'Inline SVG Benefits:', 'nanato-addons' ); ?></h4>
+							<ul>
+								<li><?php esc_html_e( '🎨 Direct CSS styling of SVG elements', 'nanato-addons' ); ?></li>
+								<li><?php esc_html_e( '⚡ Better performance (no additional HTTP requests)', 'nanato-addons' ); ?></li>
+								<li><?php esc_html_e( '🎯 JavaScript access to SVG DOM elements', 'nanato-addons' ); ?></li>
+								<li><?php esc_html_e( '✨ CSS animations and hover effects', 'nanato-addons' ); ?></li>
+							</ul>
+							
+							<h4><?php esc_html_e( 'Usage Examples:', 'nanato-addons' ); ?></h4>
+							<p><strong><?php esc_html_e( 'In Gutenberg/Block Editor:', 'nanato-addons' ); ?></strong></p>
+							<p><?php esc_html_e( '1. Add an Image block', 'nanato-addons' ); ?></p>
+							<p><?php esc_html_e( '2. Upload your SVG file', 'nanato-addons' ); ?></p>
+							<p><?php esc_html_e( '3. In Advanced settings, add the CSS class:', 'nanato-addons' ); ?> <code><?php echo esc_attr( $target_class ); ?></code></p>
+							
+							<p><strong><?php esc_html_e( 'In Classic Editor or HTML:', 'nanato-addons' ); ?></strong></p>
+							<code>&lt;img class="<?php echo esc_attr( $target_class ); ?>" src="your-image.svg" alt="Description" /&gt;</code>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<?php submit_button(); ?>
+		</form>
+	</div>
 </div>
 
 <style>
@@ -86,4 +190,45 @@ $noindex_options = get_option( 'nanato_addons_noindex_options', array() );
 	margin-bottom: 5px;
 	display: block;
 }
+.nanato-info-box {
+	background: #f0f8ff;
+	border: 1px solid #cce7ff;
+	border-radius: 4px;
+	padding: 15px;
+	margin-top: 10px;
+}
+.nanato-info-box h4 {
+	margin-top: 0;
+	color: #0073aa;
+}
+.nanato-info-box ul {
+	margin-left: 20px;
+}
+.nanato-info-box code {
+	background: #fff;
+	padding: 2px 6px;
+	border-radius: 3px;
+	font-family: Monaco, Consolas, "Andale Mono", monospace;
+}
 </style>
+
+<script>
+jQuery(document).ready(function($) {
+	// Tab switching functionality
+	$('.nav-tab').on('click', function(e) {
+		e.preventDefault();
+		
+		// Remove active class from all tabs
+		$('.nav-tab').removeClass('nav-tab-active');
+		// Add active class to clicked tab
+		$(this).addClass('nav-tab-active');
+		
+		// Hide all tab content
+		$('.tab-content').hide();
+		
+		// Show selected tab content
+		var tabId = $(this).data('tab') || $(this).attr('href').substring(1);
+		$('#' + tabId).show();
+	});
+});
+</script>

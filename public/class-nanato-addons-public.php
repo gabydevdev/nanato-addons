@@ -83,6 +83,18 @@ class Nanato_Addons_Public {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/nanato-addons-public.css', array(), $this->version, 'all' );
+		
+		// Enqueue SVG inline styles if inline SVG is enabled
+		$svg_options = get_option( 'nanato_addons_svg_options', array() );
+		if ( ! empty( $svg_options['enable_inline_svg'] ) ) {
+			wp_enqueue_style( 
+				$this->plugin_name . '-svg-inline', 
+				plugin_dir_url( __DIR__ ) . 'assets/css/svg-inline.css', 
+				array(), 
+				$this->version, 
+				'all' 
+			);
+		}
 	}
 
 	/**
@@ -105,6 +117,33 @@ class Nanato_Addons_Public {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/nanato-addons-public.js', array( 'jquery' ), $this->version, false );
+		
+		// Enqueue SVG inline script if inline SVG is enabled
+		$svg_options = get_option( 'nanato_addons_svg_options', array() );
+		if ( ! empty( $svg_options['enable_inline_svg'] ) ) {
+			wp_enqueue_script( 
+				$this->plugin_name . '-svg-inline', 
+				plugin_dir_url( __DIR__ ) . 'assets/js/svg-inline.js', 
+				array(), 
+				$this->version, 
+				true 
+			);
+			
+			// Localize script with settings
+			$target_class = isset( $svg_options['svg_target_class'] ) ? $svg_options['svg_target_class'] : 'style-svg';
+			$force_inline = ! empty( $svg_options['force_inline_svg'] );
+			
+			wp_localize_script(
+				$this->plugin_name . '-svg-inline',
+				'nanatoaddonsSvg',
+				array(
+					'targetClass' => esc_attr( $target_class ),
+					'forceInline' => $force_inline,
+					'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
+					'nonce'       => wp_create_nonce( 'nanato_svg_nonce' )
+				)
+			);
+		}
 	}
 
 	/**

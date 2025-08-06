@@ -12,5 +12,8 @@
     "zip": "wp-release zip",
     "release": "wp-release release",
     "publish": "wp-release publish"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^30.20.0"
   }
 }
