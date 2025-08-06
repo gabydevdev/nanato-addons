@@ -220,4 +220,175 @@ class Nanato_Addons_Admin {
 
 		return $data;
 	}
+
+	/**
+	 * Add inline SVG settings section to admin page.
+	 *
+	 * @since    1.0.0
+	 */
+	public function register_svg_settings() {
+		// Register SVG inline settings
+		register_setting( 'nanato_addons_svg', 'nanato_addons_svg_options' );
+		
+		add_settings_section(
+			'nanato_addons_svg_section',
+			__( 'SVG Support Settings', 'nanato-addons' ),
+			array( $this, 'svg_settings_section_callback' ),
+			'nanato-addons-svg'
+		);
+
+		add_settings_field(
+			'enable_inline_svg',
+			__( 'Enable Inline SVG', 'nanato-addons' ),
+			array( $this, 'enable_inline_svg_callback' ),
+			'nanato-addons-svg',
+			'nanato_addons_svg_section'
+		);
+
+		add_settings_field(
+			'svg_target_class',
+			__( 'CSS Target Class', 'nanato-addons' ),
+			array( $this, 'svg_target_class_callback' ),
+			'nanato-addons-svg',
+			'nanato_addons_svg_section'
+		);
+
+		add_settings_field(
+			'force_inline_svg',
+			__( 'Force Inline SVG', 'nanato-addons' ),
+			array( $this, 'force_inline_svg_callback' ),
+			'nanato-addons-svg',
+			'nanato_addons_svg_section'
+		);
+
+		add_settings_field(
+			'auto_insert_class',
+			__( 'Auto Insert Class', 'nanato-addons' ),
+			array( $this, 'auto_insert_class_callback' ),
+			'nanato-addons-svg',
+			'nanato_addons_svg_section'
+		);
+	}
+
+	/**
+	 * SVG settings section callback.
+	 *
+	 * @since    1.0.0
+	 */
+	public function svg_settings_section_callback() {
+		echo '<p>' . esc_html__( 'Configure SVG support and inline rendering options.', 'nanato-addons' ) . '</p>';
+	}
+
+	/**
+	 * Enable inline SVG callback.
+	 *
+	 * @since    1.0.0
+	 */
+	public function enable_inline_svg_callback() {
+		$options = get_option( 'nanato_addons_svg_options', array() );
+		$enabled = isset( $options['enable_inline_svg'] ) ? $options['enable_inline_svg'] : '';
+		?>
+		<input type="checkbox" id="enable_inline_svg" name="nanato_addons_svg_options[enable_inline_svg]" value="1" <?php checked( $enabled, 1 ); ?> />
+		<label for="enable_inline_svg">
+			<?php esc_html_e( 'Enable inline SVG rendering for images with the target class', 'nanato-addons' ); ?>
+		</label>
+		<p class="description">
+			<?php esc_html_e( 'When enabled, img tags with the target class will be replaced with inline SVG code, allowing direct CSS styling of SVG elements.', 'nanato-addons' ); ?>
+		</p>
+		<?php
+	}
+
+	/**
+	 * SVG target class callback.
+	 *
+	 * @since    1.0.0
+	 */
+	public function svg_target_class_callback() {
+		$options = get_option( 'nanato_addons_svg_options', array() );
+		$class = isset( $options['svg_target_class'] ) ? $options['svg_target_class'] : 'style-svg';
+		?>
+		<input type="text" id="svg_target_class" name="nanato_addons_svg_options[svg_target_class]" value="<?php echo esc_attr( $class ); ?>" class="regular-text" />
+		<p class="description">
+			<?php esc_html_e( 'CSS class to target for inline SVG replacement. Default: style-svg', 'nanato-addons' ); ?>
+			<br>
+			<?php esc_html_e( 'Example usage: <img class="style-svg" src="image.svg" alt="My SVG" />', 'nanato-addons' ); ?>
+		</p>
+		<?php
+	}
+
+	/**
+	 * Force inline SVG callback.
+	 *
+	 * @since    1.0.0
+	 */
+	public function force_inline_svg_callback() {
+		$options = get_option( 'nanato_addons_svg_options', array() );
+		$enabled = isset( $options['force_inline_svg'] ) ? $options['force_inline_svg'] : '';
+		?>
+		<input type="checkbox" id="force_inline_svg" name="nanato_addons_svg_options[force_inline_svg]" value="1" <?php checked( $enabled, 1 ); ?> />
+		<label for="force_inline_svg">
+			<?php esc_html_e( 'Force all SVG images to render inline', 'nanato-addons' ); ?>
+		</label>
+		<p class="description">
+			<strong><?php esc_html_e( 'Use with caution!', 'nanato-addons' ); ?></strong>
+			<?php esc_html_e( 'This will automatically convert ALL SVG images to inline, regardless of CSS classes. Useful for page builders that don\'t allow custom CSS classes.', 'nanato-addons' ); ?>
+		</p>
+		<?php
+	}
+
+	/**
+	 * Auto insert class callback.
+	 *
+	 * @since    1.0.0
+	 */
+	public function auto_insert_class_callback() {
+		$options = get_option( 'nanato_addons_svg_options', array() );
+		$enabled = isset( $options['auto_insert_class'] ) ? $options['auto_insert_class'] : '';
+		?>
+		<input type="checkbox" id="auto_insert_class" name="nanato_addons_svg_options[auto_insert_class]" value="1" <?php checked( $enabled, 1 ); ?> />
+		<label for="auto_insert_class">
+			<?php esc_html_e( 'Automatically add target class to SVG images', 'nanato-addons' ); ?>
+		</label>
+		<p class="description">
+			<?php esc_html_e( '(Classic Editor Only) Automatically adds the target class when inserting SVG images. Removes default WordPress classes and only affects SVG files.', 'nanato-addons' ); ?>
+		</p>
+		<?php
+	}
+
+	/**
+	 * Automatically insert SVG class when adding images via Classic Editor.
+	 *
+	 * @since    1.0.0
+	 * @param    array $html    The attachment HTML.
+	 * @param    int   $id      The attachment ID.
+	 * @param    array $attachment The attachment array.
+	 * @return   array           Modified attachment HTML.
+	 */
+	public function auto_insert_svg_class( $html, $id, $attachment ) {
+		$options = get_option( 'nanato_addons_svg_options', array() );
+		
+		// Only proceed if auto insert is enabled
+		if ( empty( $options['auto_insert_class'] ) ) {
+			return $html;
+		}
+
+		// Check if this is an SVG file
+		$mime_type = get_post_mime_type( $id );
+		if ( $mime_type !== 'image/svg+xml' ) {
+			return $html;
+		}
+
+		// Get the target class
+		$target_class = isset( $options['svg_target_class'] ) ? $options['svg_target_class'] : 'style-svg';
+
+		// Remove WordPress default classes and add our target class
+		$html = preg_replace( '/class="[^"]*"/', 'class="' . esc_attr( $target_class ) . '"', $html );
+		
+		// If no class attribute exists, add it
+		if ( strpos( $html, 'class=' ) === false ) {
+			$html = str_replace( '<img ', '<img class="' . esc_attr( $target_class ) . '" ', $html );
+		}
+
+		return $html;
+	}
 }

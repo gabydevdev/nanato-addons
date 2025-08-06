@@ -153,10 +153,16 @@ class Nanato_Addons {
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_admin_menu' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_settings' );
 
+		// Register SVG settings
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_svg_settings' );
+
 		// Enable SVG uploads and sanitization
 		$this->loader->add_filter( 'upload_mimes', $plugin_admin, 'enable_svg_uploads' );
 		$this->loader->add_filter( 'wp_prepare_attachment_for_js', $plugin_admin, 'fix_svg_display', 10, 3 );
 		$this->loader->add_filter( 'wp_insert_post_data', $plugin_admin, 'sanitize_svg_upload', 10, 2 );
+
+		// Auto-insert SVG class for Classic Editor
+		$this->loader->add_filter( 'media_send_to_editor', $plugin_admin, 'auto_insert_svg_class', 10, 3 );
 	}
 
 	/**
