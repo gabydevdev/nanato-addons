@@ -6,71 +6,71 @@
 /* Ensure SVG images are responsive by default */
 img.style-svg,
 svg.replaced-svg {
-    max-width: 100%;
-    height: auto;
+	max-width: 100%;
+	height: auto;
 }
 
 /* Hide SVG images during replacement to prevent flicker */
 img.style-svg[src$=".svg"] {
-    transition: opacity 0.2s ease;
+	transition: opacity 0.2s ease;
 }
 
 /* Ensure replaced SVGs maintain proper display */
 svg.replaced-svg {
-    display: inline-block;
-    vertical-align: middle;
+	display: inline-block;
+	vertical-align: middle;
 }
 
 /* Fix for SVGs in flexbox containers */
 .wp-block-image svg.replaced-svg,
 .wp-block-cover svg.replaced-svg {
-    width: 100%;
-    height: auto;
+	width: 100%;
+	height: auto;
 }
 
 /* Accessibility improvements */
 svg.replaced-svg title {
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
 }
 
 /* When SVG is focused (for accessibility) show the title */
 svg.replaced-svg:focus title {
-    clip: auto;
-    clip-path: none;
-    height: auto;
-    overflow: visible;
-    position: static;
-    white-space: normal;
-    width: auto;
-    background: #000;
-    color: #fff;
-    padding: 2px 5px;
-    border-radius: 2px;
-    font-size: 12px;
+	clip: auto;
+	clip-path: none;
+	height: auto;
+	overflow: visible;
+	position: static;
+	white-space: normal;
+	width: auto;
+	background: #000;
+	color: #fff;
+	padding: 2px 5px;
+	border-radius: 2px;
+	font-size: 12px;
 }
 
 /* Animation class for smooth replacements */
 .svg-replacing {
-    opacity: 0.5;
+	opacity: 0.5;
 }
 
 .svg-replaced {
-    animation: svgFadeIn 0.3s ease-in-out;
+	animation: svgFadeIn 0.3s ease-in-out;
 }
 
 @keyframes svgFadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+	from {
+		opacity: 0;
+		transform: scale(0.95);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
 }

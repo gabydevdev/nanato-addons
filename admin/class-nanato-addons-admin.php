@@ -58,8 +58,8 @@ class Nanato_Addons_Admin {
 	 */
 	public function __construct( $plugin_name, $version ) {
 
-		$this->plugin_name = $plugin_name;
-		$this->version     = $version;
+		$this->plugin_name     = $plugin_name;
+		$this->version         = $version;
 		$this->noindex_options = get_option( 'nanato_addons_noindex_options', array() );
 	}
 
@@ -205,14 +205,14 @@ class Nanato_Addons_Admin {
 		if ( $file_type['type'] === 'image/svg+xml' ) {
 			// Basic SVG sanitization - remove script tags and on* attributes
 			$svg_content = file_get_contents( $file_tmp_name );
-			
+
 			if ( $svg_content !== false ) {
 				// Remove script tags
 				$svg_content = preg_replace( '/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/mi', '', $svg_content );
-				
+
 				// Remove on* event attributes
 				$svg_content = preg_replace( '/\s*on\w+\s*=\s*["\'][^"\']*["\']/i', '', $svg_content );
-				
+
 				// Write cleaned content back
 				file_put_contents( $file_tmp_name, $svg_content );
 			}
@@ -229,7 +229,7 @@ class Nanato_Addons_Admin {
 	public function register_svg_settings() {
 		// Register SVG inline settings
 		register_setting( 'nanato_addons_svg', 'nanato_addons_svg_options' );
-		
+
 		add_settings_section(
 			'nanato_addons_svg_section',
 			__( 'SVG Support Settings', 'nanato-addons' ),
@@ -305,7 +305,7 @@ class Nanato_Addons_Admin {
 	 */
 	public function svg_target_class_callback() {
 		$options = get_option( 'nanato_addons_svg_options', array() );
-		$class = isset( $options['svg_target_class'] ) ? $options['svg_target_class'] : 'style-svg';
+		$class   = isset( $options['svg_target_class'] ) ? $options['svg_target_class'] : 'style-svg';
 		?>
 		<input type="text" id="svg_target_class" name="nanato_addons_svg_options[svg_target_class]" value="<?php echo esc_attr( $class ); ?>" class="regular-text" />
 		<p class="description">
@@ -366,7 +366,7 @@ class Nanato_Addons_Admin {
 	 */
 	public function auto_insert_svg_class( $html, $id, $attachment ) {
 		$options = get_option( 'nanato_addons_svg_options', array() );
-		
+
 		// Only proceed if auto insert is enabled
 		if ( empty( $options['auto_insert_class'] ) ) {
 			return $html;
@@ -383,7 +383,7 @@ class Nanato_Addons_Admin {
 
 		// Remove WordPress default classes and add our target class
 		$html = preg_replace( '/class="[^"]*"/', 'class="' . esc_attr( $target_class ) . '"', $html );
-		
+
 		// If no class attribute exists, add it
 		if ( strpos( $html, 'class=' ) === false ) {
 			$html = str_replace( '<img ', '<img class="' . esc_attr( $target_class ) . '" ', $html );
