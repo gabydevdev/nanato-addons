@@ -130,7 +130,7 @@ class Nanato_Addons_Page_Ordering {
 	public function wp_action() {
 		$orderby = get_query_var( 'orderby' );
 		$screen  = get_current_screen();
-		
+
 		if ( ! $screen ) {
 			return;
 		}
@@ -138,17 +138,17 @@ class Nanato_Addons_Page_Ordering {
 		$post_type = $screen->post_type ?? 'post';
 
 		// Check if we're sorting by menu_order
-		if ( ( is_string( $orderby ) && 0 === strpos( $orderby, 'menu_order' ) ) || 
+		if ( ( is_string( $orderby ) && 0 === strpos( $orderby, 'menu_order' ) ) ||
 			( isset( $orderby['menu_order'] ) && 'ASC' === $orderby['menu_order'] ) ) {
 
 			// Enqueue scripts and styles
 			wp_enqueue_script( 'jquery-ui-sortable' );
-			wp_enqueue_script( 
-				'nanato-page-ordering', 
-				plugin_dir_url( __DIR__ ) . 'admin/js/nanato-page-ordering.js', 
-				array( 'jquery', 'jquery-ui-sortable' ), 
-				$this->version, 
-				true 
+			wp_enqueue_script(
+				'nanato-page-ordering',
+				plugin_dir_url( __DIR__ ) . 'admin/js/nanato-page-ordering.js',
+				array( 'jquery', 'jquery-ui-sortable' ),
+				$this->version,
+				true
 			);
 
 			wp_localize_script(
@@ -157,19 +157,19 @@ class Nanato_Addons_Page_Ordering {
 				array(
 					'ajaxurl'           => admin_url( 'admin-ajax.php' ),
 					'_wpnonce'          => wp_create_nonce( 'nanato-page-ordering-nonce' ),
-					'reset_confirm_msg' => sprintf( 
+					'reset_confirm_msg' => sprintf(
 						/* translators: %s: post type name */
-						esc_html__( 'Are you sure you want to reset the ordering of the "%s" post type?', 'nanato-addons' ), 
-						$post_type 
+						esc_html__( 'Are you sure you want to reset the ordering of the "%s" post type?', 'nanato-addons' ),
+						$post_type
 					),
 				)
 			);
 
-			wp_enqueue_style( 
-				'nanato-page-ordering', 
-				plugin_dir_url( __DIR__ ) . 'admin/css/nanato-page-ordering.css', 
-				array(), 
-				$this->version 
+			wp_enqueue_style(
+				'nanato-page-ordering',
+				plugin_dir_url( __DIR__ ) . 'admin/css/nanato-page-ordering.css',
+				array(),
+				$this->version
 			);
 		}
 	}
@@ -212,18 +212,18 @@ class Nanato_Addons_Page_Ordering {
 	public function sort_by_order_link( $views ) {
 		$class        = ( get_query_var( 'orderby' ) === 'menu_order title' ) ? 'current' : '';
 		$query_string = remove_query_arg( array( 'orderby', 'order' ) );
-		
+
 		if ( ! is_post_type_hierarchical( get_post_type() ) ) {
 			$query_string = add_query_arg( 'orderby', 'menu_order title', $query_string );
 			$query_string = add_query_arg( 'order', 'asc', $query_string );
 			$query_string = add_query_arg( 'id', 'nanato-page-ordering', $query_string );
 		}
 
-		$views['byorder'] = sprintf( 
-			'<a href="%s" class="%s">%s</a>', 
-			esc_url( $query_string ), 
-			$class, 
-			__( 'Sort by Order', 'nanato-addons' ) 
+		$views['byorder'] = sprintf(
+			'<a href="%s" class="%s">%s</a>',
+			esc_url( $query_string ),
+			$class,
+			__( 'Sort by Order', 'nanato-addons' )
 		);
 
 		return $views;
@@ -255,21 +255,21 @@ class Nanato_Addons_Page_Ordering {
 		list( 'top_level_pages' => $top_level_pages, 'children_pages' => $children_pages ) = $this->get_walked_pages( $post->post_type );
 
 		$edit_link = get_edit_post_link( $post->ID, 'raw' );
-		
+
 		$move_under_grandparent_link = add_query_arg(
 			array(
-				'action'      => 'nanato-move-under-grandparent',
+				'action'       => 'nanato-move-under-grandparent',
 				'nanato_nonce' => wp_create_nonce( "nanato-page-ordering-nonce-move-{$post->ID}" ),
-				'post_type'   => $post->post_type,
+				'post_type'    => $post->post_type,
 			),
 			$edit_link
 		);
 
 		$move_under_sibling_link = add_query_arg(
 			array(
-				'action'      => 'nanato-move-under-sibling',
+				'action'       => 'nanato-move-under-sibling',
 				'nanato_nonce' => wp_create_nonce( "nanato-page-ordering-nonce-move-{$post->ID}" ),
-				'post_type'   => $post->post_type,
+				'post_type'    => $post->post_type,
 			),
 			$edit_link
 		);
@@ -295,7 +295,7 @@ class Nanato_Addons_Page_Ordering {
 		}
 
 		// Find previous sibling
-		$sibling = 0;
+		$sibling           = 0;
 		$filtered_siblings = wp_list_filter( $siblings, array( 'ID' => $post->ID ) );
 		if ( ! empty( $filtered_siblings ) ) {
 			$key = array_key_first( $filtered_siblings );
@@ -387,12 +387,12 @@ class Nanato_Addons_Page_Ordering {
 		}
 
 		// Reset all menu_order values to 0 for this post type
-		$wpdb->update( 
-			$wpdb->posts, 
-			array( 'menu_order' => 0 ), 
-			array( 'post_type' => $post_type ), 
-			array( '%d' ), 
-			array( '%s' ) 
+		$wpdb->update(
+			$wpdb->posts,
+			array( 'menu_order' => 0 ),
+			array( 'post_type' => $post_type ),
+			array( '%d' ),
+			array( '%s' )
 		);
 
 		wp_die( 0 );
@@ -540,8 +540,8 @@ class Nanato_Addons_Page_Ordering {
 
 		// Get sorting limit
 		$page_ordering_options = get_option( 'nanato_addons_page_ordering_options', array() );
-		$max_sortable_posts = isset( $page_ordering_options['batch_size'] ) ? (int) $page_ordering_options['batch_size'] : 50;
-		$max_sortable_posts = (int) apply_filters( 'nanato_page_ordering_limit', $max_sortable_posts );
+		$max_sortable_posts    = isset( $page_ordering_options['batch_size'] ) ? (int) $page_ordering_options['batch_size'] : 50;
+		$max_sortable_posts    = (int) apply_filters( 'nanato_page_ordering_limit', $max_sortable_posts );
 		if ( $max_sortable_posts < 5 ) {
 			$max_sortable_posts = 50;
 		}
@@ -593,7 +593,7 @@ class Nanato_Addons_Page_Ordering {
 					'post_parent' => $parent_id,
 					'depth'       => count( $ancestors ),
 				);
-				$start++;
+				++$start;
 			}
 
 			// Update sibling menu order
@@ -606,7 +606,7 @@ class Nanato_Addons_Page_Ordering {
 				);
 			}
 			$new_pos[ $sibling->ID ] = $start;
-			$start++;
+			++$start;
 
 			// Position at end if no nextid
 			if ( ! $nextid && $previd === $sibling->ID ) {
@@ -624,7 +624,7 @@ class Nanato_Addons_Page_Ordering {
 					'post_parent' => $parent_id,
 					'depth'       => count( $ancestors ),
 				);
-				$start++;
+				++$start;
 			}
 		}
 
@@ -792,13 +792,13 @@ class Nanato_Addons_Page_Ordering {
 	 */
 	private function is_post_type_sortable( $post_type = 'post' ) {
 		$page_ordering_options = get_option( 'nanato_addons_page_ordering_options', array() );
-		
+
 		// Check if posts are explicitly enabled
 		if ( 'post' === $post_type && ! empty( $page_ordering_options['enable_for_posts'] ) ) {
 			// Add page-attributes support to posts if enabled
 			add_post_type_support( 'post', 'page-attributes' );
 		}
-		
+
 		// Check custom post type settings
 		if ( isset( $page_ordering_options['post_types'][ $post_type ] ) ) {
 			$sortable = ! empty( $page_ordering_options['post_types'][ $post_type ] );

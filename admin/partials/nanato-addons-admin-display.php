@@ -224,14 +224,20 @@ $page_ordering_options = get_option( 'nanato_addons_page_ordering_options', arra
 					<th scope="row"><?php esc_html_e( 'Custom Post Types', 'nanato-addons' ); ?></th>
 					<td>
 						<?php
-						$post_types = get_post_types( array( 'public' => true, '_builtin' => false ), 'objects' );
+						$post_types = get_post_types(
+							array(
+								'public'   => true,
+								'_builtin' => false,
+							),
+							'objects'
+						);
 						if ( ! empty( $post_types ) ) :
-						?>
+							?>
 							<fieldset>
 								<?php foreach ( $post_types as $post_type ) : ?>
 									<?php
-									$is_enabled = isset( $page_ordering_options['post_types'][ $post_type->name ] ) ? 
-										$page_ordering_options['post_types'][ $post_type->name ] : 
+									$is_enabled = isset( $page_ordering_options['post_types'][ $post_type->name ] ) ?
+										$page_ordering_options['post_types'][ $post_type->name ] :
 										( post_type_supports( $post_type->name, 'page-attributes' ) || is_post_type_hierarchical( $post_type->name ) );
 									?>
 									<label>

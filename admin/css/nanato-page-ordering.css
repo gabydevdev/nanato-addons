@@ -1,8 +1,8 @@
 /**
  * Nanato Page Ordering Styles
- * 
+ *
  * Styles for the drag and drop page ordering functionality.
- * 
+ *
  * @package Nanato_Addons
  * @since   1.0.6
  */
@@ -88,15 +88,15 @@
 	.wp-list-table .ui-sortable tr {
 		cursor: default; /* Disable sorting on mobile */
 	}
-	
+
 	.wp-list-table.nanato-page-ordering tr {
 		cursor: move; /* Enable only when actively sorting */
 	}
 }
 
 /* High DPI display adjustments */
-@media screen and (-webkit-min-device-pixel-ratio: 2), 
-       screen and (min-resolution: 192dpi) {
+@media screen and (-webkit-min-device-pixel-ratio: 2),
+		screen and (min-resolution: 192dpi) {
 	.nanato-updating-row .check-column {
 		background-size: 16px 16px;
 	}
