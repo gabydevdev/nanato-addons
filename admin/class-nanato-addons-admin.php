@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -169,12 +168,14 @@ class Nanato_Addons_Admin {
 	 *
 	 * @since    1.0.0
 	 * @param    array  $response    Array of prepared attachment data.
-	 * @param    object $attachment  Attachment object.
-	 * @param    array  $meta        Array of attachment meta data.
+	 * @param    object $attachment  Attachment object (unused but required by WordPress filter).
+	 * @param    array  $meta        Array of attachment meta data (unused but required by WordPress filter).
 	 * @return   array               Modified response.
 	 */
 	public function fix_svg_display( $response, $attachment, $meta ) {
-		if ( $response['mime'] === 'image/svg+xml' ) {
+		unset( $attachment, $meta ); // Unused parameters required by WordPress filter.
+
+		if ( 'image/svg+xml' === $response['mime'] ) {
 			$response['image'] = array(
 				'src'    => $response['url'],
 				'width'  => 150,
@@ -187,6 +188,7 @@ class Nanato_Addons_Admin {
 	/**
 	 * Add SVG support to WordPress media uploader.
 	 * Sanitizes SVG files for security.
+	 * Note: WordPress handles nonce verification for wp_insert_post_data hook.
 	 *
 	 * @since    1.0.0
 	 * @param    array $data     An array of slashed post data.
@@ -194,28 +196,34 @@ class Nanato_Addons_Admin {
 	 * @return   array           Modified post data.
 	 */
 	public function sanitize_svg_upload( $data, $postarr ) {
-		// Only process SVG files
-		if ( ! isset( $_FILES['async-upload']['tmp_name'] ) ) {
+		unset( $postarr ); // Not used in this context.
+
+		// Only process SVG files when async upload is happening in admin context.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- WordPress handles nonce verification for wp_insert_post_data hook.
+		if ( ! is_admin() || ! isset( $_FILES['async-upload']['tmp_name'] ) || ! isset( $_FILES['async-upload']['name'] ) ) {
 			return $data;
 		}
 
-		$file_tmp_name = $_FILES['async-upload']['tmp_name'];
-		$file_name     = $_FILES['async-upload']['name'];
-		$file_type     = wp_check_filetype( $file_name );
+		// Sanitize file inputs.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- WordPress handles nonce verification in upload context.
+		$file_tmp_name = sanitize_text_field( wp_unslash( $_FILES['async-upload']['tmp_name'] ) );
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- WordPress handles nonce verification in upload context.
+		$file_name = sanitize_file_name( wp_unslash( $_FILES['async-upload']['name'] ) );
+		$file_type = wp_check_filetype( $file_name );
 
-		if ( $file_type['type'] === 'image/svg+xml' ) {
-			// Basic SVG sanitization - remove script tags and on* attributes
-			$svg_content = file_get_contents( $file_tmp_name );
+		if ( 'image/svg+xml' === $file_type['type'] ) {
+			// Basic SVG sanitization - remove script tags and on* attributes.
+			$svg_content = $this->get_file_contents( $file_tmp_name );
 
-			if ( $svg_content !== false ) {
-				// Remove script tags
+			if ( false !== $svg_content ) {
+				// Remove script tags.
 				$svg_content = preg_replace( '/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/mi', '', $svg_content );
 
-				// Remove on* event attributes
+				// Remove on* event attributes.
 				$svg_content = preg_replace( '/\s*on\w+\s*=\s*["\'][^"\']*["\']/i', '', $svg_content );
 
-				// Write cleaned content back
-				file_put_contents( $file_tmp_name, $svg_content );
+				// Write cleaned content back using WP_Filesystem.
+				$this->write_file_contents( $file_tmp_name, $svg_content );
 			}
 		}
 
@@ -228,7 +236,7 @@ class Nanato_Addons_Admin {
 	 * @since    1.0.0
 	 */
 	public function register_svg_settings() {
-		// Register SVG inline settings
+		// Register SVG inline settings.
 		register_setting( 'nanato_addons_svg', 'nanato_addons_svg_options' );
 
 		add_settings_section(
@@ -360,36 +368,89 @@ class Nanato_Addons_Admin {
 	 * Automatically insert SVG class when adding images via Classic Editor.
 	 *
 	 * @since    1.0.0
-	 * @param    array $html    The attachment HTML.
-	 * @param    int   $id      The attachment ID.
-	 * @param    array $attachment The attachment array.
-	 * @return   array           Modified attachment HTML.
+	 * @param    string $html       The attachment HTML.
+	 * @param    int    $id         The attachment ID.
+	 * @param    array  $attachment The attachment array (unused but required by WordPress filter).
+	 * @return   string             Modified attachment HTML.
 	 */
 	public function auto_insert_svg_class( $html, $id, $attachment ) {
+		unset( $attachment ); // Unused parameter required by WordPress filter.
+
 		$options = get_option( 'nanato_addons_svg_options', array() );
 
-		// Only proceed if auto insert is enabled
+		// Only proceed if auto insert is enabled.
 		if ( empty( $options['auto_insert_class'] ) ) {
 			return $html;
 		}
 
-		// Check if this is an SVG file
+		// Check if this is an SVG file.
 		$mime_type = get_post_mime_type( $id );
-		if ( $mime_type !== 'image/svg+xml' ) {
+		if ( 'image/svg+xml' !== $mime_type ) {
 			return $html;
 		}
 
-		// Get the target class
+		// Get the target class.
 		$target_class = isset( $options['svg_target_class'] ) ? $options['svg_target_class'] : 'style-svg';
 
-		// Remove WordPress default classes and add our target class
+		// Remove WordPress default classes and add our target class.
 		$html = preg_replace( '/class="[^"]*"/', 'class="' . esc_attr( $target_class ) . '"', $html );
 
-		// If no class attribute exists, add it
-		if ( strpos( $html, 'class=' ) === false ) {
+		// If no class attribute exists, add it.
+		if ( false === strpos( $html, 'class=' ) ) {
 			$html = str_replace( '<img ', '<img class="' . esc_attr( $target_class ) . '" ', $html );
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Get file contents using WordPress filesystem.
+	 *
+	 * @since    1.0.0
+	 * @param    string $file_path The file path.
+	 * @return   string|false      File contents or false on failure.
+	 */
+	private function get_file_contents( $file_path ) {
+		// Use WordPress filesystem if available.
+		if ( function_exists( 'WP_Filesystem' ) ) {
+			global $wp_filesystem;
+			if ( ! $wp_filesystem ) {
+				WP_Filesystem();
+			}
+			if ( $wp_filesystem && $wp_filesystem->exists( $file_path ) ) {
+				return $wp_filesystem->get_contents( $file_path );
+			}
+		}
+
+		// Fallback to direct file access.
+		if ( file_exists( $file_path ) && is_readable( $file_path ) ) {
+			return file_get_contents( $file_path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		}
+
+		return false;
+	}
+
+	/**
+	 * Write file contents using WordPress filesystem.
+	 *
+	 * @since    1.0.0
+	 * @param    string $file_path The file path.
+	 * @param    string $content   The content to write.
+	 * @return   bool              True on success, false on failure.
+	 */
+	private function write_file_contents( $file_path, $content ) {
+		// Use WordPress filesystem if available.
+		if ( function_exists( 'WP_Filesystem' ) ) {
+			global $wp_filesystem;
+			if ( ! $wp_filesystem ) {
+				WP_Filesystem();
+			}
+			if ( $wp_filesystem ) {
+				return $wp_filesystem->put_contents( $file_path, $content );
+			}
+		}
+
+		// Fallback - WordPress filesystem access failed.
+		return false;
 	}
 }

@@ -1,3 +1,12 @@
+/**
+ * WordPress Release Configuration
+ *
+ * Configuration file for wp-release tool to automate WordPress plugin releases.
+ * Defines build settings, file exclusions, and release hooks.
+ *
+ * @package Nanato_Addons
+ */
+
 module.exports = {
 	pluginName: 'nanato-addons',
 	mainFile: 'nanato-addons.php',

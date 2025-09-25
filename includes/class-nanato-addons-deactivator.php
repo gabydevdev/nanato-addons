@@ -1,9 +1,7 @@
 <?php
-
 /**
  * Fired during plugin deactivation
  *
- * @link       https://nanatomedia.com
  * @since      1.0.0
  *
  * @package    Nanato_Addons
@@ -18,7 +16,6 @@
  * @since      1.0.0
  * @package    Nanato_Addons
  * @subpackage Nanato_Addons/includes
- * @author     Nanato Media <gabrielac@nanatomedia.com>
  */
 class Nanato_Addons_Deactivator {
 

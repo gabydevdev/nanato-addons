@@ -1,9 +1,7 @@
 <?php
-
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       https://nanatomedia.com
  * @since      1.0.0
  *
  * @package    Nanato_Addons
@@ -18,7 +16,6 @@
  *
  * @package    Nanato_Addons
  * @subpackage Nanato_Addons/public
- * @author     Nanato Media <gabrielac@nanatomedia.com>
  */
 class Nanato_Addons_Public {
 
@@ -65,26 +62,9 @@ class Nanato_Addons_Public {
 
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Nanato_Addons_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Nanato_Addons_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/nanato-addons-public.css', array(), $this->version, 'all' );
-
-		// Enqueue SVG inline styles if inline SVG is enabled
+		// Enqueue SVG inline styles if inline SVG is enabled.
 		$svg_options = get_option( 'nanato_addons_svg_options', array() );
 		if ( ! empty( $svg_options['enable_inline_svg'] ) ) {
 			wp_enqueue_style(
@@ -99,26 +79,9 @@ class Nanato_Addons_Public {
 
 	/**
 	 * Register the JavaScript for the public-facing side of the site.
-	 *
-	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Nanato_Addons_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Nanato_Addons_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/nanato-addons-public.js', array( 'jquery' ), $this->version, false );
-
-		// Enqueue SVG inline script if inline SVG is enabled
+		// Enqueue SVG inline script if inline SVG is enabled.
 		$svg_options = get_option( 'nanato_addons_svg_options', array() );
 		if ( ! empty( $svg_options['enable_inline_svg'] ) ) {
 			wp_enqueue_script(
@@ -129,7 +92,7 @@ class Nanato_Addons_Public {
 				true
 			);
 
-			// Localize script with settings
+			// Localize script with settings.
 			$target_class = isset( $svg_options['svg_target_class'] ) ? $svg_options['svg_target_class'] : 'style-svg';
 			$force_inline = ! empty( $svg_options['force_inline_svg'] );
 
@@ -152,14 +115,14 @@ class Nanato_Addons_Public {
 	 * @since    1.0.0
 	 */
 	public function add_noindex_meta() {
-		// Skip if no options are set
+		// Skip if no options are set.
 		if ( empty( $this->noindex_options ) ) {
 			return;
 		}
 
 		$paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
 
-		// Check if we should add noindex based on current page type and settings
+		// Check if we should add noindex based on current page type and settings.
 		$should_noindex = false;
 
 		if ( is_category() && ! empty( $this->noindex_options['category'] ) ) {
@@ -172,7 +135,7 @@ class Nanato_Addons_Public {
 			$should_noindex = true;
 		}
 
-		// If we should noindex and either it's not paginated-only mode or we're on page 2+
+		// If we should noindex and either it's not paginated-only mode or we're on page 2+.
 		if ( $should_noindex ) {
 			if ( empty( $this->noindex_options['paginated_only'] ) || $paged > 1 ) {
 				echo '<meta name="robots" content="noindex, follow">' . "\n";

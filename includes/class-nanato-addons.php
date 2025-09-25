@@ -81,7 +81,7 @@ class Nanato_Addons {
 	 * Include the following files that make up the plugin:
 	 *
 	 * - Nanato_Addons_Loader. Orchestrates the hooks of the plugin.
-	 * - Nanato_Addons_i18n. Defines internationalization functionality.
+	 * - Nanato_Addons_I18n. Defines internationalization functionality.
 	 * - Nanato_Addons_Admin. Defines all hooks for the admin area.
 	 * - Nanato_Addons_Public. Defines all hooks for the public side of the site.
 	 * - Nanato_Addons_Page_Ordering. Defines page ordering functionality.
@@ -128,7 +128,7 @@ class Nanato_Addons {
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Nanato_Addons_i18n class in order to set the domain and to register the hook
+	 * Uses the Nanato_Addons_I18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
@@ -136,7 +136,7 @@ class Nanato_Addons {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Nanato_Addons_i18n();
+		$plugin_i18n = new Nanato_Addons_I18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 	}
@@ -155,22 +155,22 @@ class Nanato_Addons {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
-		// Add admin menu and settings for noindex functionality
+		// Add admin menu and settings for noindex functionality.
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_admin_menu' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_settings' );
 
-		// Register SVG settings
+		// Register SVG settings.
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_svg_settings' );
 
-		// Enable SVG uploads and sanitization
+		// Enable SVG uploads and sanitization.
 		$this->loader->add_filter( 'upload_mimes', $plugin_admin, 'enable_svg_uploads' );
 		$this->loader->add_filter( 'wp_prepare_attachment_for_js', $plugin_admin, 'fix_svg_display', 10, 3 );
 		$this->loader->add_filter( 'wp_insert_post_data', $plugin_admin, 'sanitize_svg_upload', 10, 2 );
 
-		// Auto-insert SVG class for Classic Editor
+		// Auto-insert SVG class for Classic Editor.
 		$this->loader->add_filter( 'media_send_to_editor', $plugin_admin, 'auto_insert_svg_class', 10, 3 );
 
-		// Initialize page ordering functionality
+		// Initialize page ordering functionality.
 		new Nanato_Addons_Page_Ordering( $this->get_plugin_name(), $this->get_version() );
 	}
 
@@ -188,7 +188,7 @@ class Nanato_Addons {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
-		// Add noindex meta tag functionality
+		// Add noindex meta tag functionality.
 		$this->loader->add_action( 'wp_head', $plugin_public, 'add_noindex_meta' );
 	}
 

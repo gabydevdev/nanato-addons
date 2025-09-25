@@ -1,10 +1,10 @@
 <?php
 /**
  * Plugin Name: Nanato Addons
- * Plugin URI: https://yourdomain.com
- * Description: Custom made addons for Nanato Media Themes including ACF fields and SEO optimization features.
+ * Plugin URI:
+ * Description: Custom made addons for Nanato Media Themes including SEO optimization features, SVG support, and page ordering functionality.
  * Author: Nanato Media
- * Author URI: https://github.com/nanatomedia
+ * Author URI:
  * Version: 1.0.9
  * Text Domain: nanato-addons
  *
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
-define( 'NANATO_ADDONS_VERSION', '1.0.6' );
+define( 'NANATO_ADDONS_VERSION', '1.0.9' );
 define( 'NANATO_ADDONS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NANATO_ADDONS_URL', plugin_dir_url( __FILE__ ) );
 
@@ -43,39 +43,12 @@ register_activation_hook( __FILE__, 'activate_nanato_addons' );
 register_deactivation_hook( __FILE__, 'deactivate_nanato_addons' );
 
 /**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
+ * The core plugin class.
  */
 require NANATO_ADDONS_DIR . 'includes/class-nanato-addons.php';
 
 /**
- * Registers the ACF field type.
- */
-function nanato_addons_include_acf_fields() {
-	if ( ! function_exists( 'acf_register_field_type' ) ) {
-		return;
-	}
-
-	require_once NANATO_ADDONS_DIR . '/acf-info-button/class-nanato-addons-acf-field-info-button.php';
-	acf_register_field_type( 'nanato_addons_acf_field_info_button' );
-
-	require_once NANATO_ADDONS_DIR . '/acf-button/class-nanato-addons-acf-field-button.php';
-	acf_register_field_type( 'nanato_addons_acf_field_button' );
-
-	require_once NANATO_ADDONS_DIR . '/acf-info-box/class-nanato-addons-acf-field-info-box.php';
-	acf_register_field_type( 'nanato_addons_acf_field_info_box' );
-
-	require_once NANATO_ADDONS_DIR . '/acf-headline/class-nanato-addons-acf-field-headline.php';
-	acf_register_field_type( 'nanato_addons_acf_field_headline' );
-}
-add_action( 'init', 'nanato_addons_include_acf_fields' );
-
-/**
  * Begins execution of the plugin.
- *
- * Since everything within the plugin is registered via hooks,
- * then kicking off the plugin from this point in the file does
- * not affect the page life cycle.
  *
  * @since 1.0.0
  */

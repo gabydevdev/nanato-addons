@@ -2,7 +2,6 @@
 /**
  * The page ordering functionality of the plugin.
  *
- * @link       https://nanatomedia.com
  * @since      1.0.6
  *
  * @package    Nanato_Addons
@@ -326,21 +325,21 @@ class Nanato_Addons_Page_Ordering {
 	 * @since    1.0.6
 	 */
 	public function ajax_page_ordering() {
-		// Verify nonce
-		if ( ! wp_verify_nonce( $_POST['_wpnonce'] ?? '', 'nanato-page-ordering-nonce' ) ) {
+		// Verify nonce.
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ?? '' ) ), 'nanato-page-ordering-nonce' ) ) {
 			wp_die( -1 );
 		}
 
-		// Check required parameters
+		// Check required parameters.
 		if ( empty( $_POST['id'] ) || ( ! isset( $_POST['previd'] ) && ! isset( $_POST['nextid'] ) ) ) {
 			wp_die( -1 );
 		}
 
-		$post_id  = (int) $_POST['id'];
-		$previd   = empty( $_POST['previd'] ) ? false : (int) $_POST['previd'];
-		$nextid   = empty( $_POST['nextid'] ) ? false : (int) $_POST['nextid'];
-		$start    = empty( $_POST['start'] ) ? 1 : (int) $_POST['start'];
-		$excluded = empty( $_POST['excluded'] ) ? array( $post_id ) : array_filter( (array) json_decode( $_POST['excluded'] ), 'intval' );
+		$post_id  = (int) sanitize_text_field( wp_unslash( $_POST['id'] ) );
+		$previd   = empty( $_POST['previd'] ) ? false : (int) sanitize_text_field( wp_unslash( $_POST['previd'] ) );
+		$nextid   = empty( $_POST['nextid'] ) ? false : (int) sanitize_text_field( wp_unslash( $_POST['nextid'] ) );
+		$start    = empty( $_POST['start'] ) ? 1 : (int) sanitize_text_field( wp_unslash( $_POST['start'] ) );
+		$excluded = empty( $_POST['excluded'] ) ? array( $post_id ) : array_filter( (array) json_decode( sanitize_text_field( wp_unslash( $_POST['excluded'] ) ) ), 'intval' );
 
 		// Validate post
 		$post = get_post( $post_id );
@@ -370,8 +369,8 @@ class Nanato_Addons_Page_Ordering {
 	public function ajax_reset_page_ordering() {
 		global $wpdb;
 
-		// Verify nonce
-		if ( ! wp_verify_nonce( $_POST['_wpnonce'] ?? '', 'nanato-page-ordering-nonce' ) ) {
+		// Verify nonce.
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ?? '' ) ), 'nanato-page-ordering-nonce' ) ) {
 			wp_die( -1 );
 		}
 

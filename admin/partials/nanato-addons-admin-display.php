@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Provide a admin area view for the plugin
  *
@@ -12,11 +11,11 @@
  * @subpackage Nanato_Addons/admin/partials
  */
 
-// Get the noindex options
+// Get the noindex options.
 $noindex_options = get_option( 'nanato_addons_noindex_options', array() );
-// Get the SVG options
+// Get the SVG options.
 $svg_options = get_option( 'nanato_addons_svg_options', array() );
-// Get the page ordering options
+// Get the page ordering options.
 $page_ordering_options = get_option( 'nanato_addons_page_ordering_options', array() );
 ?>
 
@@ -234,18 +233,18 @@ $page_ordering_options = get_option( 'nanato_addons_page_ordering_options', arra
 						if ( ! empty( $post_types ) ) :
 							?>
 							<fieldset>
-								<?php foreach ( $post_types as $post_type ) : ?>
+								<?php foreach ( $post_types as $post_type_obj ) : ?>
 									<?php
-									$is_enabled = isset( $page_ordering_options['post_types'][ $post_type->name ] ) ?
-										$page_ordering_options['post_types'][ $post_type->name ] :
-										( post_type_supports( $post_type->name, 'page-attributes' ) || is_post_type_hierarchical( $post_type->name ) );
+									$is_enabled = isset( $page_ordering_options['post_types'][ $post_type_obj->name ] ) ?
+										$page_ordering_options['post_types'][ $post_type_obj->name ] :
+										( post_type_supports( $post_type_obj->name, 'page-attributes' ) || is_post_type_hierarchical( $post_type_obj->name ) );
 									?>
 									<label>
-										<input type="checkbox" name="nanato_addons_page_ordering_options[post_types][<?php echo esc_attr( $post_type->name ); ?>]" value="1" <?php checked( $is_enabled ); ?>>
-										<?php echo esc_html( $post_type->label ); ?> (<?php echo esc_html( $post_type->name ); ?>)
-										<?php if ( is_post_type_hierarchical( $post_type->name ) ) : ?>
+										<input type="checkbox" name="nanato_addons_page_ordering_options[post_types][<?php echo esc_attr( $post_type_obj->name ); ?>]" value="1" <?php checked( $is_enabled ); ?>>
+										<?php echo esc_html( $post_type_obj->label ); ?> (<?php echo esc_html( $post_type_obj->name ); ?>)
+										<?php if ( is_post_type_hierarchical( $post_type_obj->name ) ) : ?>
 											<span class="description"> - <?php esc_html_e( 'Hierarchical', 'nanato-addons' ); ?></span>
-										<?php elseif ( post_type_supports( $post_type->name, 'page-attributes' ) ) : ?>
+										<?php elseif ( post_type_supports( $post_type_obj->name, 'page-attributes' ) ) : ?>
 											<span class="description"> - <?php esc_html_e( 'Has page-attributes', 'nanato-addons' ); ?></span>
 										<?php endif; ?>
 									</label><br>
