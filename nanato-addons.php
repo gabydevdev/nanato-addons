@@ -5,7 +5,7 @@
  * Description: Custom made addons for Nanato Media Themes including SEO optimization features, SVG support, and page ordering functionality.
  * Author: Nanato Media
  * Author URI:
- * Version: 1.0.11
+ * Version: 2.0.1
  * Text Domain: nanato-addons
  *
  * @package Nanato_Addons
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
-define( 'NANATO_ADDONS_VERSION', '1.0.9' );
+define( 'NANATO_ADDONS_VERSION', '1.0.11' );
 define( 'NANATO_ADDONS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'NANATO_ADDONS_URL', plugin_dir_url( __FILE__ ) );
 

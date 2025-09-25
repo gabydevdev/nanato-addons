@@ -35,9 +35,9 @@ module.exports = {
 		branch: 'main',
 	},
 	hooks: {
-		preRelease: [],
-		postRelease: [],
-		preBuild: [],
-		postBuild: [],
+		preRelease: [ 'npm run php:lint' ],
+		postRelease: [ 'echo "✅ Release completed successfully!"' ],
+		preBuild: [ 'npm run format' ],
+		postBuild: [ 'echo "📦 Build completed"' ],
 	},
 };
